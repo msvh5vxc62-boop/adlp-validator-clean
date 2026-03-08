@@ -1,0 +1,9 @@
+{
+  "canonical_code": "NAVIGATION.GNSS.OVERHEAT.S3",
+  "event": {
+    "domain": "NAVIGATION",
+    "system": "GNSS",
+    "fault_type": "OVERHEAT",
+    "severity": "S3"
+  }
+}
