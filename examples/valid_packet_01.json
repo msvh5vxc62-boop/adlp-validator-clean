@@ -8,7 +8,10 @@
     "component": "RIGHT_REAR",
     "fault_type": "OVERHEAT",
     "severity": "S3",
+    "event_type": "FAULT",
     "confidence_percent": 91
+    
+    
   },
   "metrics": {
     "freeze_frame": {
