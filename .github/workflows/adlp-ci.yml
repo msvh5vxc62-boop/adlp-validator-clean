@@ -3,6 +3,8 @@ name: ADLP Validator CI
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -21,7 +23,10 @@ jobs:
       - name: Install validator
         run: pip install -e .
 
-      - name: Validate example packet
+      - name: Validate valid example packets
         run: |
-          python -m adlp_validator.cli examples/valid_packet_01.json \
-            --registry registry/adlp_registry_v1.1.0.json
+          python -m adlp_validator.cli examples/valid --registry registry/adlp_registry_v1.5.0.json
+
+      - name: Ensure invalid example packets fail
+        run: |
+          ! python -m adlp_validator.cli examples/invalid --registry registry/adlp_registry_v1.5.0.json
