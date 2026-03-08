@@ -24,4 +24,4 @@ jobs:
       - name: Validate example packet
         run: |
           python -m adlp_validator.cli examples/valid_packet_01.json \
-          --registry registry/adlp_registry_v1.1.0.json
+            --registry registry/adlp_registry_v1.1.0.json
