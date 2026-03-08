@@ -1,0 +1,27 @@
+name: ADLP Validator CI
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install validator
+        run: pip install -e .
+
+      - name: Validate example packet
+        run: |
+          python -m adlp_validator.cli examples/valid_packet_01.json \
+          --registry registry/adlp_registry_v1.1.0.json
