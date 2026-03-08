@@ -1,9 +1,24 @@
 {
+  "adlp_version": "1.0",
+  "registry_version": "1.1.0",
   "canonical_code": "PROPULSION.GNSS.SIGNAL_LOSS.S2",
   "event": {
     "domain": "PROPULSION",
     "system": "GNSS",
+    "component": "ANTENNA",
     "fault_type": "SIGNAL_LOSS",
-    "severity": "S2"
+    "severity": "S2",
+    "confidence_percent": 87
+  },
+  "metrics": {
+    "freeze_frame": {
+      "satellite_count": 0,
+      "hdop": 9.8
+    }
+  },
+  "action": {
+    "recommended_action": "DEGRADE",
+    "action_mandatory": false,
+    "safe_state_triggered": false
   }
 }
