@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ADLP Packet",
+  "type": "object",
+  "required": [
+    "adlp_version",
+    "registry_version",
+    "canonical_code",
+    "event",
+    "metrics",
+    "action"
+  ],
+  "properties": {
+    "adlp_version": { "type": "string" },
+    "registry_version": { "type": "string" },
+    "canonical_code": { "type": "string" },
+    "event": { "type": "object" },
+    "metrics": { "type": "object" },
+    "action": { "type": "object" }
+  }
+}
