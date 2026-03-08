@@ -11,6 +11,8 @@ This tool validates ADLP defect packets against:
 - severity and action rules
 - required metric presence
 
+ADLP Validator CI ✔ PASS
+
 Event Types
 
 ADLP supports the following event types:
