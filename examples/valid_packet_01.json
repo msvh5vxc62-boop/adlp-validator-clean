@@ -1,0 +1,23 @@
+{
+  "canonical_code": "PROPULSION.MOTOR.OVERHEAT.S3",
+  "event": {
+    "domain": "PROPULSION",
+    "system": "MOTOR",
+    "component": "RIGHT_REAR",
+    "fault_type": "OVERHEAT",
+    "severity": "S3",
+    "confidence_percent": 91
+  },
+  "metrics": {
+    "freeze_frame": {
+      "temperature_c": 108.4,
+      "current_a": 21.2,
+      "voltage_v": 21.9
+    }
+  },
+  "action": {
+    "recommended_action": "RETURN_TO_BASE",
+    "action_mandatory": true,
+    "safe_state_triggered": true
+  }
+}
