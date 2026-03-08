@@ -1,0 +1,9 @@
+{
+  "canonical_code": "PROPULSION.GNSS.SIGNAL_LOSS.S2",
+  "event": {
+    "domain": "PROPULSION",
+    "system": "GNSS",
+    "fault_type": "SIGNAL_LOSS",
+    "severity": "S2"
+  }
+}
