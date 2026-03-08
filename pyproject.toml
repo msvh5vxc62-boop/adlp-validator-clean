@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adlp-validator"
+version = "1.0.0"
+description = "Reference validator for the Autonomous Defect Language Protocol"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["jsonschema"]
+
+[tool.setuptools.packages.find]
+include = ["adlp_validator*"]
