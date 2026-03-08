@@ -3,6 +3,7 @@
   "registry_version": "1.1.0",
   "canonical_code": "PROPULSION.MOTOR.OVERHEAT.S5",
   "event": {
+    "event_type": "FAULT",
     "domain": "PROPULSION",
     "system": "MOTOR",
     "component": "LEFT_FRONT",
