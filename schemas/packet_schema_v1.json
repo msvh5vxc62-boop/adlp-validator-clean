@@ -1,0 +1,262 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ADLP Packet Schema v1",
+  "type": "object",
+  "required": [
+    "adlp_version",
+    "registry_version",
+    "event_id",
+    "device",
+    "event",
+    "metrics",
+    "action"
+  ],
+  "properties": {
+    "adlp_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "registry_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "event_id": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F-]{36}$"
+    },
+    "device": {
+      "type": "object",
+      "required": [
+        "device_id",
+        "manufacturer",
+        "model",
+        "firmware_version"
+      ],
+      "properties": {
+        "device_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "manufacturer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "firmware_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "serial_number": {
+          "type": "string"
+        },
+        "hardware_revision": {
+          "type": "string"
+        },
+        "operational_hours": {
+          "type": "number",
+          "minimum": 0
+        },
+        "last_service_date": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "event": {
+      "type": "object",
+      "required": [
+        "timestamp_utc",
+        "canonical_code",
+        "domain",
+        "system",
+        "fault_type",
+        "severity",
+        "confidence_percent"
+      ],
+      "properties": {
+        "timestamp_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "canonical_code": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+\\.[A-Z0-9_]+(\\.[A-Z0-9_]+)?\\.[A-Z0-9_]+\\.S[1-9][0-9]*$"
+        },
+        "domain": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "system": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "component": {
+          "type": ["string", "null"],
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "fault_type": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "severity": {
+          "type": "string",
+          "pattern": "^S[1-9][0-9]*$"
+        },
+        "confidence_percent": {
+          "type": "number"
+        },
+        "occurrence_count": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "operational_mode": {
+          "type": "string",
+          "enum": ["AUTONOMOUS", "MANUAL", "IDLE", "MAINTENANCE"]
+        },
+        "mission_id": {
+          "type": ["string", "null"]
+        },
+        "geo_location": {
+          "type": "object",
+          "required": ["lat", "lon", "alt"],
+          "properties": {
+            "lat": {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90
+            },
+            "lon": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            "alt": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "environmental_conditions": {
+          "type": "object",
+          "properties": {
+            "ambient_temp_c": {
+              "type": "number"
+            },
+            "wind_speed_mps": {
+              "type": "number",
+              "minimum": 0
+            },
+            "humidity_percent": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "metrics": {
+      "type": "object",
+      "required": ["freeze_frame"],
+      "properties": {
+        "freeze_frame": {
+          "type": "object",
+          "minProperties": 1,
+          "properties": {
+            "temperature_c": { "type": "number" },
+            "ambient_temp_c": { "type": "number" },
+            "current_a": { "type": "number" },
+            "voltage_v": { "type": "number" },
+            "cpu_load_percent": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "vibration_index": {
+              "type": "number",
+              "minimum": 0
+            },
+            "wind_speed_mps": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": true
+        },
+        "health_indicators": {
+          "type": "object",
+          "properties": {
+            "battery_cycles": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "motor_runtime_hours": {
+              "type": "number",
+              "minimum": 0
+            },
+            "error_rate_last_hour": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": true
+        },
+        "previous_related_events": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "action": {
+      "type": "object",
+      "required": [
+        "recommended_action",
+        "action_mandatory",
+        "safe_state_triggered"
+      ],
+      "properties": {
+        "recommended_action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "action_mandatory": {
+          "type": "boolean"
+        },
+        "safe_state_triggered": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "integrity": {
+      "type": "object",
+      "properties": {
+        "log_signature": {
+          "type": "string"
+        },
+        "signature_algorithm": {
+          "type": "string",
+          "enum": ["ECDSA", "RSA", "ED25519"]
+        },
+        "firmware_hash": {
+          "type": "string"
+        },
+        "schema_hash": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
