@@ -38,6 +38,17 @@ An ADLP packet contains:
 - freeze-frame telemetry
 - recommended actions
 
+Event Types
+
+ADLP supports the following event types:
+	•	FAULT
+	•	WARNING
+	•	MAINTENANCE
+	•	STATE_CHANGE
+	•	RECOVERY
+canonical_code describes what happened; 
+event_type describes what kind of event it is.
+
 Example:
 
 ```json
@@ -48,14 +59,3 @@ Example:
 }
 
 
-Event Types
-
-ADLP now supports the following event types:
-	•	FAULT
-	•	WARNING
-	•	MAINTENANCE
-	•	STATE_CHANGE
-	•	RECOVERY
-
-canonical_code describes what happened; 
-event_type describes what kind of event it is.
