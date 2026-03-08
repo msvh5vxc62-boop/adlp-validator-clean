@@ -11,6 +11,17 @@ This tool validates ADLP defect packets against:
 - severity and action rules
 - required metric presence
 
+Event Types
+
+ADLP supports the following event types:
+	•	FAULT
+	•	WARNING
+	•	MAINTENANCE
+	•	STATE_CHANGE
+	•	RECOVERY
+canonical_code describes what happened; 
+event_type describes what kind of event it is.
+
 ## Example
 
 ```bash
