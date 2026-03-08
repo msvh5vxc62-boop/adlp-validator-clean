@@ -11,11 +11,76 @@
     "action"
   ],
   "properties": {
-    "adlp_version": { "type": "string" },
-    "registry_version": { "type": "string" },
-    "canonical_code": { "type": "string" },
-    "event": { "type": "object" },
-    "metrics": { "type": "object" },
-    "action": { "type": "object" }
+    "adlp_version": {
+      "type": "string"
+    },
+    "registry_version": {
+      "type": "string"
+    },
+    "canonical_code": {
+      "type": "string"
+    },
+    "event": {
+      "type": "object",
+      "required": [
+        "event_type",
+        "domain",
+        "system",
+        "fault_type",
+        "severity"
+      ],
+      "properties": {
+        "event_type": {
+          "type": "string",
+          "enum": [
+            "FAULT",
+            "WARNING",
+            "MAINTENANCE",
+            "STATE_CHANGE",
+            "RECOVERY"
+          ]
+        },
+        "domain": {
+          "type": "string"
+        },
+        "system": {
+          "type": "string"
+        },
+        "component": {
+          "type": "string"
+        },
+        "fault_type": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string"
+        },
+        "confidence_percent": {
+          "type": "number"
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "description": "Optional sensor or telemetry metrics"
+    },
+    "action": {
+      "type": "object",
+      "properties": {
+        "recommended_action": {
+          "type": "string"
+        },
+        "action_mandatory": {
+          "type": "boolean"
+        },
+        "safe_state_triggered": {
+          "type": "boolean"
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "description": "Optional machine and environment context"
+    }
   }
 }
