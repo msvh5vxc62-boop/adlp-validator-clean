@@ -1,0 +1,5 @@
+internal_code,description,notes,component,severity_hint
+E1023,Motor overheat on rear right rotor,,RIGHT_REAR,S3
+E1208,Battery low voltage warning,,,
+E1450,GPS signal lost during flight,,,
+E3001,Water level low in tank,,,
