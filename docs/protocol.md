@@ -46,3 +46,16 @@ Example:
   "registry_version": "1.1.0",
   "canonical_code": "PROPULSION.MOTOR.OVERHEAT.S3"
 }
+
+
+Event Types
+
+ADLP now supports the following event types:
+	•	FAULT
+	•	WARNING
+	•	MAINTENANCE
+	•	STATE_CHANGE
+	•	RECOVERY
+
+canonical_code describes what happened; 
+event_type describes what kind of event it is.
