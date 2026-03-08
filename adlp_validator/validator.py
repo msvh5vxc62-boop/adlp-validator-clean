@@ -24,7 +24,7 @@ def validate_packet(packet: Dict[str, Any], registry: RegistryLoader) -> Dict[st
         })
 
     event = packet.get("event", {})
-        allowed_event_types = {"FAULT", "WARNING", "MAINTENANCE", "STATE_CHANGE", "RECOVERY"}
+    allowed_event_types = {"FAULT", "WARNING", "MAINTENANCE", "STATE_CHANGE", "RECOVERY"}
     event_type = event.get("event_type")
 
     if event_type not in allowed_event_types:
@@ -33,6 +33,7 @@ def validate_packet(packet: Dict[str, Any], registry: RegistryLoader) -> Dict[st
             "path": "event.event_type",
             "message": f"event_type '{event_type}' is not valid"
         })
+        
     canonical_code = packet.get("canonical_code")
 
     # Canonical parsing
