@@ -1,13 +1,9 @@
 
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/8359b2c0-fe27-4f97-bffb-b1ef89ea1696" />
 
 
 
-<p align="center">
-  <img src="adlp-logo.png" width="250">
-</p>
 
-<h1 align="center">ADLP™</h1>
-<p align="center">Autonomous Defect Language Protocol</p>
 
 
 # ADLP Reference Validator
