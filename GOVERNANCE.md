@@ -55,10 +55,4 @@ The validator ensures:
 
 ## Certification
 
-ADLP certification programs may exist in the future, but the protocol itself remains open and implementable by anyone.
-
-## Status
-
-Current status: Experimental protocol.
-
-Future versions may introduce additional fields and context structures.
+ADLP certification programs are inevitable , but the protocol itself remains open and implementable by anyone.
