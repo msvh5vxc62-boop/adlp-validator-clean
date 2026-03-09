@@ -1,3 +1,15 @@
+
+
+
+
+<p align="center">
+  <img src="adlp-logo.png" width="250">
+</p>
+
+<h1 align="center">ADLP™</h1>
+<p align="center">Autonomous Defect Language Protocol</p>
+
+
 # ADLP Reference Validator
 
 Reference validator for the Autonomous Defect Language Protocol (ADLP).
