@@ -1,6 +1,6 @@
 {
   "adlp_version": "1.0",
-  "registry_version": "1.5.0",
+  "registry_version": "1.6.0",
   "canonical_code": "PROPULSION.GNSS.SIGNAL_LOSS.S2",
   "event": {
     "event_type": "FAULT",
