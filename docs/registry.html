@@ -1,4 +1,4 @@
-
+by u
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,34 +78,28 @@ async function loadRegistry() {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const data = await response.json();
-    console.log("Registry JSON:", data);
-
     const allObjects = collectAllObjects(data);
 
     const useful = allObjects.filter(item =>
-      item.code ||
-      item.event_code ||
-      item.id ||
-      item.name ||
-      item.packet ||
-      item.packet_code
+      item.domain || item.subsystem || item.fault || item.severity ||
+      item.code || item.event_code || item.packet_code ||
+      item.domain_name || item.subsystem_name || item.failure
     );
-
-    if (useful.length === 0) {
-      output.textContent = "Registry loaded, but no code-like entries were found.";
-      return;
-    }
 
     output.innerHTML = "";
 
-    useful.slice(0, 50).forEach(item => {
+    useful.slice(0, 80).forEach(item => {
       const div = document.createElement("div");
       div.className = "item";
       div.textContent = JSON.stringify(item, null, 2);
       output.appendChild(div);
     });
+
+    if (useful.length === 0) {
+      output.textContent = "No detailed event entries found.";
+    }
   } catch (err) {
-    console.error("Failed to load registry:", err);
+    console.error(err);
     output.textContent = "Failed to load registry.";
   }
 }
