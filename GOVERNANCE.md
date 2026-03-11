@@ -1,6 +1,6 @@
 # ADLP Governance
 
-The Autonomous Defect Language Protocol (ADLP) is an open specification for representing machine diagnostic events using standardized canonical codes.
+The Autonomous Diagnostic Language Protocol (ADLP) is an open specification for representing machine diagnostic events using standardized canonical codes.
 
 ## Registry Authority
 
