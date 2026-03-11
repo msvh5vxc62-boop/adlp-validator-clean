@@ -54,53 +54,63 @@
   </div>
 
   <script>
-    function getEntries(data) {
-      if (Array.isArray(data)) return data;
-      if (Array.isArray(data.events)) return data.events;
-      if (Array.isArray(data.codes)) return data.codes;
-      if (Array.isArray(data.registry)) return data.registry;
-      if (Array.isArray(data.entries)) return data.entries;
-      if (data.registry && Array.isArray(data.registry.events)) return data.registry.events;
-      return null;
+function collectAllObjects(node, out = []) {
+  if (Array.isArray(node)) {
+    for (const item of node) collectAllObjects(item, out);
+    return out;
+  }
+
+  if (node && typeof node === "object") {
+    out.push(node);
+    for (const value of Object.values(node)) {
+      collectAllObjects(value, out);
+    }
+  }
+
+  return out;
+}
+
+async function loadRegistry() {
+  const output = document.getElementById("output");
+
+  try {
+    const response = await fetch("./adlp_registry_v1.6.0.json");
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const data = await response.json();
+    console.log("Registry JSON:", data);
+
+    const allObjects = collectAllObjects(data);
+
+    const useful = allObjects.filter(item =>
+      item.code ||
+      item.event_code ||
+      item.id ||
+      item.name ||
+      item.packet ||
+      item.packet_code
+    );
+
+    if (useful.length === 0) {
+      output.textContent = "Registry loaded, but no code-like entries were found.";
+      return;
     }
 
-    async function loadRegistry() {
-      const output = document.getElementById("output");
+    output.innerHTML = "";
 
-      try {
-        const response = await fetch("./adlp_registry_v1.6.0.json");
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    useful.slice(0, 50).forEach(item => {
+      const div = document.createElement("div");
+      div.className = "item";
+      div.textContent = JSON.stringify(item, null, 2);
+      output.appendChild(div);
+    });
+  } catch (err) {
+    console.error("Failed to load registry:", err);
+    output.textContent = "Failed to load registry.";
+  }
+}
 
-        const data = await response.json();
-        console.log("Registry page JSON:", data);
-
-        const entries = getEntries(data);
-
-        if (!entries) {
-          output.innerHTML = "Registry loaded, but JSON structure is not recognized.";
-          return;
-        }
-
-        if (entries.length === 0) {
-          output.innerHTML = "Registry is empty.";
-          return;
-        }
-
-        output.innerHTML = "";
-
-        entries.slice(0, 50).forEach(item => {
-          const div = document.createElement("div");
-          div.className = "item";
-          div.textContent = JSON.stringify(item, null, 2);
-          output.appendChild(div);
-        });
-      } catch (err) {
-        console.error("Failed to load registry:", err);
-        output.textContent = "Failed to load registry.";
-      }
-    }
-
-    window.addEventListener("DOMContentLoaded", loadRegistry);
-  </script>
+window.addEventListener("DOMContentLoaded", loadRegistry);
+</script>
 </body>
 </html>
