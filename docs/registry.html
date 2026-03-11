@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ADLP Registry Explorer</title>
+
+<style>
+
+body{
+font-family: Arial, sans-serif;
+background:#f5f5f5;
+margin:0;
+padding:40px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:40px;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+h1{
+color:#1f3c88;
+}
+
+nav{
+margin-bottom:30px;
+}
+
+nav a{
+margin-right:20px;
+text-decoration:none;
+font-weight:bold;
+color:#2980b9;
+}
+
+.domain{
+margin-top:20px;
+padding:10px;
+background:#eef3ff;
+border-radius:6px;
+}
+
+.system{
+margin-left:20px;
+margin-top:10px;
+}
+
+.fault{
+margin-left:40px;
+color:#444;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>ADLP Registry Explorer</h1>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="registry.html">Registry</a>
+<a href="validator.html">Validator</a>
+</nav>
+
+<div id="registry"></div>
+
+</div>
+
+<script>
+
+async function loadRegistry(){
+
+try{
+
+const response = await fetch("../registry/adlp_registry_v1.5.0.json");
+const data = await response.json();
+
+const container = document.getElementById("registry");
+
+data.domains.forEach(domain => {
+
+const domainDiv = document.createElement("div");
+domainDiv.className = "domain";
+domainDiv.innerHTML = "<strong>" + domain.name + "</strong>";
+
+container.appendChild(domainDiv);
+
+domain.systems.forEach(system => {
+
+const systemDiv = document.createElement("div");
+systemDiv.className = "system";
+systemDiv.innerHTML = system.name;
+
+domainDiv.appendChild(systemDiv);
+
+system.faults.forEach(fault => {
+
+const faultDiv = document.createElement("div");
+faultDiv.className = "fault";
+faultDiv.innerHTML = fault;
+
+systemDiv.appendChild(faultDiv);
+
+});
+
+});
+
+});
+
+}
+
+catch(err){
+
+document.getElementById("registry").innerHTML =
+"Failed to load registry.";
+
+}
+
+}
+
+loadRegistry();
+
+</script>
+
+</body>
+</html>
