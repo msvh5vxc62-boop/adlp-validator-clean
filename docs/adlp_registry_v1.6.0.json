@@ -1,0 +1,1013 @@
+{
+  "registry_version": "1.6.0",
+  "protocol_version": "1.0",
+  "released": "2026-03-08",
+  "changelog": [
+    {
+      "version": "1.6.0",
+      "date": "2026-03-08",
+      "changes": [
+        "Added VIBRATION domain (user request) + sensors/faults",
+        "Added FORCE_TORQUE domain (critical for arms, landing, payload)",
+        "Added ENCODER domain (common actuator failure point)",
+        "Added EMI domain (electromagnetic interference – growing issue with motors/5G)",
+        "New required_metrics: vibration_g, force_n, torque_nm, encoder_pulses, emi_level_db",
+        "All previous expansions (OPTICAL, MAGNETIC, ACOUSTIC, BIOLOGICAL, RADIATION, CHEMICAL, S0, AI_COGNITION, etc.) preserved unchanged"
+      ]
+    }
+  ],
+  "domains": [
+    { "name": "POWER", "status": "ACTIVE" },
+    { "name": "PROPULSION", "status": "ACTIVE" },
+    { "name": "ACTUATION", "status": "ACTIVE" },
+    { "name": "NAVIGATION", "status": "ACTIVE" },
+    { "name": "SENSING", "status": "ACTIVE" },
+    { "name": "COMMUNICATION", "status": "ACTIVE" },
+    { "name": "COMPUTE", "status": "ACTIVE" },
+    { "name": "SOFTWARE", "status": "ACTIVE" },
+    { "name": "STRUCTURE", "status": "ACTIVE" },
+    { "name": "THERMAL", "status": "ACTIVE" },
+    { "name": "PRESSURE", "status": "ACTIVE" },
+    { "name": "FLUID", "status": "ACTIVE" },
+    { "name": "ENVIRONMENT", "status": "ACTIVE" },
+    { "name": "SAFETY", "status": "ACTIVE" },
+    { "name": "SECURITY", "status": "ACTIVE" },
+    { "name": "PAYLOAD", "status": "ACTIVE" },
+    { "name": "AI_COGNITION", "status": "ACTIVE" },
+    { "name": "END_EFFECTOR", "status": "ACTIVE" },
+    { "name": "REDUNDANCY", "status": "ACTIVE" },
+    { "name": "CHEMICAL", "status": "ACTIVE" },
+    { "name": "RADIATION", "status": "ACTIVE" },
+    { "name": "BIOLOGICAL", "status": "ACTIVE" },
+    { "name": "ACOUSTIC", "status": "ACTIVE" },
+    { "name": "MAGNETIC", "status": "ACTIVE" },
+    { "name": "OPTICAL", "status": "ACTIVE" },
+    { "name": "VIBRATION", "status": "ACTIVE" },
+    { "name": "FORCE_TORQUE", "status": "ACTIVE" },
+    { "name": "ENCODER", "status": "ACTIVE" },
+    { "name": "EMI", "status": "ACTIVE" }
+  ],
+  "systems": [
+    { "domain": "POWER", "name": "BATTERY", "status": "ACTIVE" },
+    { "domain": "POWER", "name": "BMS", "status": "ACTIVE" },
+    { "domain": "POWER", "name": "POWER_DISTRIBUTION", "status": "ACTIVE" },
+    { "domain": "POWER", "name": "CHARGER", "status": "ACTIVE" },
+    { "domain": "POWER", "name": "GENERATOR", "status": "ACTIVE" },
+    { "domain": "POWER", "name": "FUEL_CELL", "status": "ACTIVE" },
+    { "domain": "POWER", "name": "DC_DC_CONVERTER", "status": "ACTIVE" },
+    { "domain": "PROPULSION", "name": "MOTOR", "status": "ACTIVE" },
+    { "domain": "PROPULSION", "name": "ESC", "status": "ACTIVE" },
+    { "domain": "PROPULSION", "name": "ROTOR", "status": "ACTIVE" },
+    { "domain": "PROPULSION", "name": "PROPELLER", "status": "ACTIVE" },
+    { "domain": "PROPULSION", "name": "DRIVE_UNIT", "status": "ACTIVE" },
+    { "domain": "PROPULSION", "name": "THRUSTER", "status": "ACTIVE" },
+    { "domain": "PROPULSION", "name": "TRANSMISSION", "status": "ACTIVE" },
+    { "domain": "ACTUATION", "name": "SERVO", "status": "ACTIVE" },
+    { "domain": "ACTUATION", "name": "JOINT", "status": "ACTIVE" },
+    { "domain": "ACTUATION", "name": "GIMBAL", "status": "ACTIVE" },
+    { "domain": "ACTUATION", "name": "LINEAR_ACTUATOR", "status": "ACTIVE" },
+    { "domain": "ACTUATION", "name": "VALVE_ACTUATOR", "status": "ACTIVE" },
+    { "domain": "ACTUATION", "name": "STEERING_ACTUATOR", "status": "ACTIVE" },
+    { "domain": "ACTUATION", "name": "BRAKE_ACTUATOR", "status": "ACTIVE" },
+    { "domain": "NAVIGATION", "name": "GNSS", "status": "ACTIVE" },
+    { "domain": "NAVIGATION", "name": "IMU", "status": "ACTIVE" },
+    { "domain": "NAVIGATION", "name": "BAROMETER", "status": "ACTIVE" },
+    { "domain": "NAVIGATION", "name": "MAGNETOMETER", "status": "ACTIVE" },
+    { "domain": "NAVIGATION", "name": "ODOMETRY", "status": "ACTIVE" },
+    { "domain": "NAVIGATION", "name": "LOCALIZATION_ENGINE", "status": "ACTIVE" },
+    { "domain": "NAVIGATION", "name": "SLAM", "status": "ACTIVE" },
+    { "domain": "SENSING", "name": "CAMERA", "status": "ACTIVE" },
+    { "domain": "SENSING", "name": "LIDAR", "status": "ACTIVE" },
+    { "domain": "SENSING", "name": "RADAR", "status": "ACTIVE" },
+    { "domain": "SENSING", "name": "ULTRASONIC", "status": "ACTIVE" },
+    { "domain": "SENSING", "name": "PROXIMITY_SENSOR", "status": "ACTIVE" },
+    { "domain": "SENSING", "name": "TEMPERATURE_SENSOR", "status": "ACTIVE" },
+    { "domain": "SENSING", "name": "PRESSURE_SENSOR", "status": "ACTIVE" },
+    { "domain": "SENSING", "name": "FLOW_SENSOR", "status": "ACTIVE" },
+    { "domain": "SENSING", "name": "TORQUE_SENSOR", "status": "ACTIVE" },
+    { "domain": "SENSING", "name": "LOAD_SENSOR", "status": "ACTIVE" },
+    { "domain": "SENSING", "name": "HUMIDITY_SENSOR", "status": "ACTIVE" },
+    { "domain": "SENSING", "name": "GAS_SENSOR", "status": "ACTIVE" },
+    { "domain": "SENSING", "name": "LEVEL_SENSOR", "status": "ACTIVE" },
+    { "domain": "COMMUNICATION", "name": "LINK", "status": "ACTIVE" },
+    { "domain": "COMMUNICATION", "name": "RADIO", "status": "ACTIVE" },
+    { "domain": "COMMUNICATION", "name": "TELEMETRY", "status": "ACTIVE" },
+    { "domain": "COMMUNICATION", "name": "ANTENNA", "status": "ACTIVE" },
+    { "domain": "COMMUNICATION", "name": "MODEM", "status": "ACTIVE" },
+    { "domain": "COMMUNICATION", "name": "NETWORK_INTERFACE", "status": "ACTIVE" },
+    { "domain": "COMPUTE", "name": "CPU", "status": "ACTIVE" },
+    { "domain": "COMPUTE", "name": "GPU", "status": "ACTIVE" },
+    { "domain": "COMPUTE", "name": "MEMORY", "status": "ACTIVE" },
+    { "domain": "COMPUTE", "name": "STORAGE", "status": "ACTIVE" },
+    { "domain": "COMPUTE", "name": "FLIGHT_CONTROLLER", "status": "ACTIVE" },
+    { "domain": "COMPUTE", "name": "MICROCONTROLLER", "status": "ACTIVE" },
+    { "domain": "COMPUTE", "name": "EDGE_ACCELERATOR", "status": "ACTIVE" },
+    { "domain": "SOFTWARE", "name": "FIRMWARE", "status": "ACTIVE" },
+    { "domain": "SOFTWARE", "name": "STATE_MANAGER", "status": "ACTIVE" },
+    { "domain": "SOFTWARE", "name": "CONFIGURATION", "status": "ACTIVE" },
+    { "domain": "SOFTWARE", "name": "CONTROL_LOOP", "status": "ACTIVE" },
+    { "domain": "SOFTWARE", "name": "MISSION_LOGIC", "status": "ACTIVE" },
+    { "domain": "SOFTWARE", "name": "UPDATE_MANAGER", "status": "ACTIVE" },
+    { "domain": "SOFTWARE", "name": "LOGGING_SERVICE", "status": "ACTIVE" },
+    { "domain": "STRUCTURE", "name": "FRAME", "status": "ACTIVE" },
+    { "domain": "STRUCTURE", "name": "ARM", "status": "ACTIVE" },
+    { "domain": "STRUCTURE", "name": "MOUNT", "status": "ACTIVE" },
+    { "domain": "STRUCTURE", "name": "FASTENER", "status": "ACTIVE" },
+    { "domain": "STRUCTURE", "name": "LANDING_GEAR", "status": "ACTIVE" },
+    { "domain": "STRUCTURE", "name": "ENCLOSURE", "status": "ACTIVE" },
+    { "domain": "STRUCTURE", "name": "CHASSIS", "status": "ACTIVE" },
+    { "domain": "THERMAL", "name": "COOLING_SYSTEM", "status": "ACTIVE" },
+    { "domain": "THERMAL", "name": "FAN", "status": "ACTIVE" },
+    { "domain": "THERMAL", "name": "HEAT_SINK", "status": "ACTIVE" },
+    { "domain": "THERMAL", "name": "THERMAL_INTERFACE", "status": "ACTIVE" },
+    { "domain": "THERMAL", "name": "HEATER", "status": "ACTIVE" },
+    { "domain": "PRESSURE", "name": "HYDRAULIC_SYSTEM", "status": "ACTIVE" },
+    { "domain": "PRESSURE", "name": "PNEUMATIC_SYSTEM", "status": "ACTIVE" },
+    { "domain": "PRESSURE", "name": "PRESSURE_VESSEL", "status": "ACTIVE" },
+    { "domain": "PRESSURE", "name": "TANK", "status": "ACTIVE" },
+    { "domain": "PRESSURE", "name": "LINE", "status": "ACTIVE" },
+    { "domain": "FLUID", "name": "PUMP", "status": "ACTIVE" },
+    { "domain": "FLUID", "name": "VALVE", "status": "ACTIVE" },
+    { "domain": "FLUID", "name": "HOSE", "status": "ACTIVE" },
+    { "domain": "FLUID", "name": "NOZZLE", "status": "ACTIVE" },
+    { "domain": "FLUID", "name": "FILTER", "status": "ACTIVE" },
+    { "domain": "FLUID", "name": "RESERVOIR", "status": "ACTIVE" },
+    { "domain": "ENVIRONMENT", "name": "OPERATING_ENVIRONMENT", "status": "ACTIVE" },
+    { "domain": "ENVIRONMENT", "name": "WEATHER_EXPOSURE", "status": "ACTIVE" },
+    { "domain": "ENVIRONMENT", "name": "DUST_EXPOSURE", "status": "ACTIVE" },
+    { "domain": "ENVIRONMENT", "name": "WATER_INGRESS", "status": "ACTIVE" },
+    { "domain": "SAFETY", "name": "FAILSAFE", "status": "ACTIVE" },
+    { "domain": "SAFETY", "name": "EMERGENCY_STOP", "status": "ACTIVE" },
+    { "domain": "SAFETY", "name": "COLLISION_AVOIDANCE", "status": "ACTIVE" },
+    { "domain": "SAFETY", "name": "GEO_FENCE", "status": "ACTIVE" },
+    { "domain": "SAFETY", "name": "REDUNDANCY_MANAGER", "status": "ACTIVE" },
+    { "domain": "SECURITY", "name": "AUTHENTICATION", "status": "ACTIVE" },
+    { "domain": "SECURITY", "name": "COMMUNICATION", "status": "ACTIVE" },
+    { "domain": "SECURITY", "name": "KEY_STORE", "status": "ACTIVE" },
+    { "domain": "SECURITY", "name": "SECURE_BOOT", "status": "ACTIVE" },
+    { "domain": "SECURITY", "name": "TAMPER_MONITOR", "status": "ACTIVE" },
+    { "domain": "PAYLOAD", "name": "CAMERA_PAYLOAD", "status": "ACTIVE" },
+    { "domain": "PAYLOAD", "name": "SPRAYER", "status": "ACTIVE" },
+    { "domain": "PAYLOAD", "name": "GRIPPER", "status": "ACTIVE" },
+    { "domain": "PAYLOAD", "name": "DELIVERY_BAY", "status": "ACTIVE" },
+    { "domain": "PAYLOAD", "name": "SENSOR_POD", "status": "ACTIVE" },
+    { "domain": "AI_COGNITION", "name": "VISION_MODEL", "status": "ACTIVE" },
+    { "domain": "AI_COGNITION", "name": "BEHAVIOR_PLANNER", "status": "ACTIVE" },
+    { "domain": "AI_COGNITION", "name": "POLICY_NETWORK", "status": "ACTIVE" },
+    { "domain": "AI_COGNITION", "name": "WORLD_MODEL", "status": "ACTIVE" },
+    { "domain": "END_EFFECTOR", "name": "GRIPPER", "status": "ACTIVE" },
+    { "domain": "END_EFFECTOR", "name": "TOOL_CHANGER", "status": "ACTIVE" },
+    { "domain": "END_EFFECTOR", "name": "SUCTION_CUP", "status": "ACTIVE" },
+    { "domain": "END_EFFECTOR", "name": "FINGERS", "status": "ACTIVE" },
+    { "domain": "REDUNDANCY", "name": "VOTING_LOGIC", "status": "ACTIVE" },
+    { "domain": "REDUNDANCY", "name": "FAILOVER_SWITCH", "status": "ACTIVE" },
+    { "domain": "REDUNDANCY", "name": "SYNC_CHANNEL", "status": "ACTIVE" },
+    { "domain": "CHEMICAL", "name": "PH_SENSOR", "status": "ACTIVE" },
+    { "domain": "CHEMICAL", "name": "TURBIDITY_SENSOR", "status": "ACTIVE" },
+    { "domain": "CHEMICAL", "name": "CHEMICAL_ANALYZER", "status": "ACTIVE" },
+    { "domain": "CHEMICAL", "name": "CONDUCTIVITY_SENSOR", "status": "ACTIVE" },
+    { "domain": "CHEMICAL", "name": "DISSOLVED_OXYGEN_SENSOR", "status": "ACTIVE" },
+    { "domain": "RADIATION", "name": "GEIGER_COUNTER", "status": "ACTIVE" },
+    { "domain": "RADIATION", "name": "DOSIMETER", "status": "ACTIVE" },
+    { "domain": "RADIATION", "name": "SCINTILLATION_DETECTOR", "status": "ACTIVE" },
+    { "domain": "RADIATION", "name": "GAMMA_SPECTROMETER", "status": "ACTIVE" },
+    { "domain": "BIOLOGICAL", "name": "BIOSENSOR", "status": "ACTIVE" },
+    { "domain": "BIOLOGICAL", "name": "AIR_SAMPLER", "status": "ACTIVE" },
+    { "domain": "BIOLOGICAL", "name": "MICROBIAL_DETECTOR", "status": "ACTIVE" },
+    { "domain": "BIOLOGICAL", "name": "PCR_SENSOR", "status": "ACTIVE" },
+    { "domain": "ACOUSTIC", "name": "MICROPHONE_ARRAY", "status": "ACTIVE" },
+    { "domain": "ACOUSTIC", "name": "SONAR", "status": "ACTIVE" },
+    { "domain": "ACOUSTIC", "name": "HYDROPHONE", "status": "ACTIVE" },
+    { "domain": "ACOUSTIC", "name": "ACOUSTIC_BEACON", "status": "ACTIVE" },
+    { "domain": "MAGNETIC", "name": "MAGNETOMETER", "status": "ACTIVE" },
+    { "domain": "MAGNETIC", "name": "COMPASS", "status": "ACTIVE" },
+    { "domain": "MAGNETIC", "name": "HALL_EFFECT_SENSOR", "status": "ACTIVE" },
+    { "domain": "MAGNETIC", "name": "FLUXGATE", "status": "ACTIVE" },
+    { "domain": "OPTICAL", "name": "LENS_ASSEMBLY", "status": "ACTIVE" },
+    { "domain": "OPTICAL", "name": "LASER_RANGEFINDER", "status": "ACTIVE" },
+    { "domain": "OPTICAL", "name": "FIBER_OPTIC_LINK", "status": "ACTIVE" },
+    { "domain": "OPTICAL", "name": "IR_SENSOR", "status": "ACTIVE" },
+    { "domain": "OPTICAL", "name": "UV_SENSOR", "status": "ACTIVE" },
+    { "domain": "OPTICAL", "name": "PHOTODETECTOR", "status": "ACTIVE" },
+    { "domain": "VIBRATION", "name": "ACCELEROMETER", "status": "ACTIVE" },
+    { "domain": "VIBRATION", "name": "VIBRATION_SENSOR", "status": "ACTIVE" },
+    { "domain": "VIBRATION", "name": "PIEZO_SENSOR", "status": "ACTIVE" },
+    { "domain": "FORCE_TORQUE", "name": "FORCE_SENSOR", "status": "ACTIVE" },
+    { "domain": "FORCE_TORQUE", "name": "TORQUE_SENSOR", "status": "ACTIVE" },
+    { "domain": "FORCE_TORQUE", "name": "LOAD_CELL", "status": "ACTIVE" },
+    { "domain": "FORCE_TORQUE", "name": "STRAIN_GAUGE", "status": "ACTIVE" },
+    { "domain": "ENCODER", "name": "ROTARY_ENCODER", "status": "ACTIVE" },
+    { "domain": "ENCODER", "name": "LINEAR_ENCODER", "status": "ACTIVE" },
+    { "domain": "ENCODER", "name": "ABSOLUTE_ENCODER", "status": "ACTIVE" },
+    { "domain": "ENCODER", "name": "INCREMENTAL_ENCODER", "status": "ACTIVE" },
+    { "domain": "EMI", "name": "EMI_SENSOR", "status": "ACTIVE" },
+    { "domain": "EMI", "name": "RF_INTERFERENCE_DETECTOR", "status": "ACTIVE" },
+    { "domain": "EMI", "name": "SHIELDING_MONITOR", "status": "ACTIVE" }
+  ],
+  "fault_types": [
+    {
+      "name": "OVERHEAT",
+      "status": "ACTIVE",
+      "domains_applicable": ["POWER", "PROPULSION", "ACTUATION", "COMPUTE", "THERMAL", "PAYLOAD"],
+      "severity_guidance": ["S2", "S3", "S4", "S5"],
+      "required_metrics": ["temperature_c"]
+    },
+    {
+      "name": "UNDER_TEMP",
+      "status": "ACTIVE",
+      "domains_applicable": ["POWER", "ENVIRONMENT", "THERMAL", "SENSING"],
+      "severity_guidance": ["S1", "S2", "S3"],
+      "required_metrics": ["temperature_c"]
+    },
+    {
+      "name": "THERMAL_DRIFT",
+      "status": "ACTIVE",
+      "domains_applicable": ["POWER", "PROPULSION", "COMPUTE", "THERMAL", "SENSING"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": ["temperature_c"]
+    },
+    {
+      "name": "COOLING_FAILURE",
+      "status": "ACTIVE",
+      "domains_applicable": ["THERMAL", "COMPUTE", "POWER", "PROPULSION"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["temperature_c"]
+    },
+    {
+      "name": "OVER_VOLT",
+      "status": "ACTIVE",
+      "domains_applicable": ["POWER"],
+      "severity_guidance": ["S2", "S3", "S4", "S5"],
+      "required_metrics": ["voltage_v"]
+    },
+    {
+      "name": "UNDER_VOLT",
+      "status": "ACTIVE",
+      "domains_applicable": ["POWER"],
+      "severity_guidance": ["S2", "S3", "S4", "S5"],
+      "required_metrics": ["voltage_v"]
+    },
+    {
+      "name": "OVER_CURRENT",
+      "status": "ACTIVE",
+      "domains_applicable": ["POWER", "PROPULSION", "ACTUATION", "COMPUTE"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["current_a"]
+    },
+    {
+      "name": "CURRENT_SPIKE",
+      "status": "ACTIVE",
+      "domains_applicable": ["POWER", "PROPULSION", "ACTUATION", "COMPUTE"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["current_a"]
+    },
+    {
+      "name": "POWER_LOSS",
+      "status": "ACTIVE",
+      "domains_applicable": ["POWER", "COMPUTE", "COMMUNICATION", "SAFETY"],
+      "severity_guidance": ["S3", "S4", "S5"],
+      "required_metrics": ["voltage_v", "current_a"]
+    },
+    {
+      "name": "POWER_INSTABILITY",
+      "status": "ACTIVE",
+      "domains_applicable": ["POWER", "COMPUTE", "COMMUNICATION"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["voltage_v"]
+    },
+    {
+      "name": "CHARGE_FAILURE",
+      "status": "ACTIVE",
+      "domains_applicable": ["POWER"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["voltage_v", "current_a"]
+    },
+    {
+      "name": "STALL",
+      "status": "ACTIVE",
+      "domains_applicable": ["PROPULSION", "ACTUATION", "FLUID"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["current_a"]
+    },
+    {
+      "name": "MISALIGNMENT",
+      "status": "ACTIVE",
+      "domains_applicable": ["PROPULSION", "ACTUATION", "STRUCTURE", "PAYLOAD"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "WEAR_EXCEEDED",
+      "status": "ACTIVE",
+      "domains_applicable": ["PROPULSION", "ACTUATION", "STRUCTURE", "FLUID"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "VIBRATION_EXCESS",
+      "status": "ACTIVE",
+      "domains_applicable": ["PROPULSION", "ACTUATION", "STRUCTURE", "PAYLOAD", "VIBRATION"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["vibration_g"]
+    },
+    {
+      "name": "IMBALANCE",
+      "status": "ACTIVE",
+      "domains_applicable": ["PROPULSION", "ACTUATION", "PAYLOAD"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["vibration_g"]
+    },
+    {
+      "name": "FRICTION_EXCESS",
+      "status": "ACTIVE",
+      "domains_applicable": ["PROPULSION", "ACTUATION", "FLUID"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "JAM_DETECTED",
+      "status": "ACTIVE",
+      "domains_applicable": ["ACTUATION", "FLUID", "PAYLOAD", "PROPULSION"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "TORQUE_EXCESS",
+      "status": "ACTIVE",
+      "domains_applicable": ["ACTUATION", "PROPULSION", "SENSING", "FORCE_TORQUE"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["torque_nm"]
+    },
+    {
+      "name": "SIGNAL_LOSS",
+      "status": "ACTIVE",
+      "domains_applicable": ["NAVIGATION", "SENSING", "COMMUNICATION"],
+      "severity_guidance": ["S2", "S3", "S4", "S5"],
+      "required_metrics": []
+    },
+    {
+      "name": "SIGNAL_DEGRADATION",
+      "status": "ACTIVE",
+      "domains_applicable": ["NAVIGATION", "SENSING", "COMMUNICATION"],
+      "severity_guidance": ["S0", "S1", "S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "LATENCY_EXCESS",
+      "status": "ACTIVE",
+      "domains_applicable": ["COMMUNICATION", "COMPUTE", "SENSING", "SOFTWARE"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "NOISE_EXCESS",
+      "status": "ACTIVE",
+      "domains_applicable": ["SENSING", "COMMUNICATION", "NAVIGATION"],
+      "severity_guidance": ["S0", "S1", "S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "OUT_OF_RANGE",
+      "status": "ACTIVE",
+      "domains_applicable": ["NAVIGATION", "SENSING", "ENVIRONMENT", "PRESSURE", "FLUID"],
+      "severity_guidance": ["S1", "S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "SENSOR_DRIFT",
+      "status": "ACTIVE",
+      "domains_applicable": ["SENSING", "NAVIGATION"],
+      "severity_guidance": ["S0", "S1", "S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "CALIBRATION_FAIL",
+      "status": "ACTIVE",
+      "domains_applicable": ["NAVIGATION", "SENSING", "ACTUATION", "SOFTWARE", "PAYLOAD"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "DATA_DROPOUT",
+      "status": "ACTIVE",
+      "domains_applicable": ["SENSING", "COMMUNICATION", "COMPUTE"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "OVER_PRESSURE",
+      "status": "ACTIVE",
+      "domains_applicable": ["PRESSURE", "FLUID", "SENSING"],
+      "severity_guidance": ["S2", "S3", "S4", "S5"],
+      "required_metrics": ["pressure_kpa"]
+    },
+    {
+      "name": "UNDER_PRESSURE",
+      "status": "ACTIVE",
+      "domains_applicable": ["PRESSURE", "FLUID", "SENSING"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["pressure_kpa"]
+    },
+    {
+      "name": "PRESSURE_LOSS",
+      "status": "ACTIVE",
+      "domains_applicable": ["PRESSURE", "FLUID"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["pressure_kpa"]
+    },
+    {
+      "name": "LEAK_DETECTED",
+      "status": "ACTIVE",
+      "domains_applicable": ["PRESSURE", "FLUID", "PAYLOAD", "ENVIRONMENT"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "FLOW_BLOCKED",
+      "status": "ACTIVE",
+      "domains_applicable": ["FLUID", "PRESSURE", "PAYLOAD"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["flow_rate_lpm"]
+    },
+    {
+      "name": "FLOW_EXCESS",
+      "status": "ACTIVE",
+      "domains_applicable": ["FLUID", "PRESSURE", "PAYLOAD"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": ["flow_rate_lpm"]
+    },
+    {
+      "name": "UNDER_LEVEL",
+      "status": "ACTIVE",
+      "domains_applicable": ["FLUID", "PRESSURE", "SENSING"],
+      "severity_guidance": ["S1", "S2", "S3"],
+      "required_metrics": ["level_percent"]
+    },
+    {
+      "name": "CAVITATION_DETECTED",
+      "status": "ACTIVE",
+      "domains_applicable": ["FLUID", "PRESSURE"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "STATE_CONFLICT",
+      "status": "ACTIVE",
+      "domains_applicable": ["SOFTWARE", "COMPUTE", "SAFETY"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "DEADLOCK",
+      "status": "ACTIVE",
+      "domains_applicable": ["SOFTWARE", "COMPUTE"],
+      "severity_guidance": ["S3", "S4", "S5"],
+      "required_metrics": ["cpu_load_percent"]
+    },
+    {
+      "name": "WATCHDOG_TRIGGER",
+      "status": "ACTIVE",
+      "domains_applicable": ["SOFTWARE", "COMPUTE", "SAFETY"],
+      "severity_guidance": ["S3", "S4", "S5"],
+      "required_metrics": ["cpu_load_percent"]
+    },
+    {
+      "name": "MEMORY_CORRUPTION",
+      "status": "ACTIVE",
+      "domains_applicable": ["COMPUTE", "SOFTWARE"],
+      "severity_guidance": ["S3", "S4", "S5"],
+      "required_metrics": []
+    },
+    {
+      "name": "STORAGE_FAILURE",
+      "status": "ACTIVE",
+      "domains_applicable": ["COMPUTE", "SOFTWARE"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "CONFIG_CORRUPTION",
+      "status": "ACTIVE",
+      "domains_applicable": ["SOFTWARE", "SECURITY"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "UPDATE_FAILURE",
+      "status": "ACTIVE",
+      "domains_applicable": ["SOFTWARE", "COMPUTE"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "FRACTURE_DETECTED",
+      "status": "ACTIVE",
+      "domains_applicable": ["STRUCTURE"],
+      "severity_guidance": ["S3", "S4", "S5"],
+      "required_metrics": []
+    },
+    {
+      "name": "LOAD_EXCEEDED",
+      "status": "ACTIVE",
+      "domains_applicable": ["STRUCTURE", "ACTUATION", "PROPULSION", "PAYLOAD", "SENSING", "FORCE_TORQUE"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["force_n"]
+    },
+    {
+      "name": "DEFORMATION_DETECTED",
+      "status": "ACTIVE",
+      "domains_applicable": ["STRUCTURE"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "FATIGUE_DETECTED",
+      "status": "ACTIVE",
+      "domains_applicable": ["STRUCTURE", "PROPULSION", "ACTUATION"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "FASTENER_LOOSE",
+      "status": "ACTIVE",
+      "domains_applicable": ["STRUCTURE", "PAYLOAD"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "TAMPER_EVENT",
+      "status": "ACTIVE",
+      "domains_applicable": ["SECURITY", "STRUCTURE", "SOFTWARE"],
+      "severity_guidance": ["S2", "S3", "S4", "S5"],
+      "required_metrics": []
+    },
+    {
+      "name": "AUTH_FAILURE",
+      "status": "ACTIVE",
+      "domains_applicable": ["SECURITY", "COMMUNICATION"],
+      "severity_guidance": ["S2", "S3", "S4", "S5"],
+      "required_metrics": []
+    },
+    {
+      "name": "COMMUNICATION_BREACH",
+      "status": "ACTIVE",
+      "domains_applicable": ["SECURITY", "COMMUNICATION"],
+      "severity_guidance": ["S3", "S4", "S5"],
+      "required_metrics": []
+    },
+    {
+      "name": "FAILSAFE_TRIGGERED",
+      "status": "ACTIVE",
+      "domains_applicable": ["SAFETY", "SOFTWARE"],
+      "severity_guidance": ["S3", "S4", "S5"],
+      "required_metrics": []
+    },
+    {
+      "name": "GEO_FENCE_BREACH",
+      "status": "ACTIVE",
+      "domains_applicable": ["SAFETY", "NAVIGATION"],
+      "severity_guidance": ["S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "COLLISION_RISK",
+      "status": "ACTIVE",
+      "domains_applicable": ["SAFETY", "SENSING", "NAVIGATION"],
+      "severity_guidance": ["S2", "S3", "S4", "S5"],
+      "required_metrics": []
+    },
+    {
+      "name": "TEMP_LIMIT_EXCEEDED",
+      "status": "ACTIVE",
+      "domains_applicable": ["ENVIRONMENT", "SENSING", "THERMAL"],
+      "severity_guidance": ["S0", "S1", "S2", "S3", "S4"],
+      "required_metrics": ["ambient_temp_c"]
+    },
+    {
+      "name": "WIND_LIMIT_EXCEEDED",
+      "status": "ACTIVE",
+      "domains_applicable": ["ENVIRONMENT", "NAVIGATION"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["wind_speed_mps"]
+    },
+    {
+      "name": "HUMIDITY_LIMIT_EXCEEDED",
+      "status": "ACTIVE",
+      "domains_applicable": ["ENVIRONMENT", "SENSING"],
+      "severity_guidance": ["S1", "S2", "S3"],
+      "required_metrics": ["humidity_percent"]
+    },
+    {
+      "name": "DUST_LIMIT_EXCEEDED",
+      "status": "ACTIVE",
+      "domains_applicable": ["ENVIRONMENT"],
+      "severity_guidance": ["S1", "S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "WATER_INGRESS_DETECTED",
+      "status": "ACTIVE",
+      "domains_applicable": ["ENVIRONMENT", "STRUCTURE", "POWER", "COMPUTE"],
+      "severity_guidance": ["S2", "S3", "S4", "S5"],
+      "required_metrics": []
+    },
+    {
+      "name": "OBSTRUCTION_DETECTED",
+      "status": "ACTIVE",
+      "domains_applicable": ["ENVIRONMENT", "SENSING", "SAFETY", "FLUID"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "CONFIDENCE_COLLAPSE",
+      "status": "ACTIVE",
+      "domains_applicable": ["AI_COGNITION", "SENSING", "NAVIGATION"],
+      "severity_guidance": ["S0", "S3", "S4", "S5"],
+      "required_metrics": ["confidence_score"]
+    },
+    {
+      "name": "HALLUCINATION_DETECTED",
+      "status": "ACTIVE",
+      "domains_applicable": ["AI_COGNITION", "SENSING"],
+      "severity_guidance": ["S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "POLICY_VIOLATION",
+      "status": "ACTIVE",
+      "domains_applicable": ["AI_COGNITION", "SAFETY", "SOFTWARE"],
+      "severity_guidance": ["S4", "S5"],
+      "required_metrics": []
+    },
+    {
+      "name": "GRIP_FAILURE",
+      "status": "ACTIVE",
+      "domains_applicable": ["END_EFFECTOR", "PAYLOAD"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["grip_force_n"]
+    },
+    {
+      "name": "SLIPPAGE_DETECTED",
+      "status": "ACTIVE",
+      "domains_applicable": ["END_EFFECTOR", "ACTUATION"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": ["slip_velocity_ms"]
+    },
+    {
+      "name": "REDUNDANCY_LOSS",
+      "status": "ACTIVE",
+      "domains_applicable": ["REDUNDANCY", "POWER", "COMPUTE", "COMMUNICATION"],
+      "severity_guidance": ["S3", "S4", "S5"],
+      "required_metrics": []
+    },
+    {
+      "name": "VOTING_DISAGREEMENT",
+      "status": "ACTIVE",
+      "domains_applicable": ["REDUNDANCY", "NAVIGATION", "SENSING"],
+      "severity_guidance": ["S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "OSCILLATION",
+      "status": "ACTIVE",
+      "domains_applicable": ["ACTUATION", "PROPULSION"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["position_error_m"]
+    },
+    {
+      "name": "GAIN_SATURATION",
+      "status": "ACTIVE",
+      "domains_applicable": ["ACTUATION", "SOFTWARE"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "ADVERSARIAL_INPUT",
+      "status": "ACTIVE",
+      "domains_applicable": ["SECURITY", "AI_COGNITION", "SENSING"],
+      "severity_guidance": ["S4", "S5"],
+      "required_metrics": []
+    },
+    {
+      "name": "BRIEF_POWER_GLITCH",
+      "status": "ACTIVE",
+      "domains_applicable": ["POWER"],
+      "severity_guidance": ["S0", "S1"],
+      "required_metrics": ["voltage_v"]
+    },
+    {
+      "name": "MOMENTARY_SIGNAL_DROP",
+      "status": "ACTIVE",
+      "domains_applicable": ["SENSING", "NAVIGATION"],
+      "severity_guidance": ["S0"],
+      "required_metrics": []
+    },
+    {
+      "name": "PH_HIGH",
+      "status": "ACTIVE",
+      "domains_applicable": ["CHEMICAL", "FLUID", "PAYLOAD", "ENVIRONMENT"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["ph_value"]
+    },
+    {
+      "name": "PH_LOW",
+      "status": "ACTIVE",
+      "domains_applicable": ["CHEMICAL", "FLUID", "PAYLOAD", "ENVIRONMENT"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["ph_value"]
+    },
+    {
+      "name": "TURBIDITY_EXCESS",
+      "status": "ACTIVE",
+      "domains_applicable": ["CHEMICAL", "FLUID", "PAYLOAD", "ENVIRONMENT"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["turbidity_ntu"]
+    },
+    {
+      "name": "CHEMICAL_CONTAMINATION",
+      "status": "ACTIVE",
+      "domains_applicable": ["CHEMICAL", "FLUID", "PAYLOAD"],
+      "severity_guidance": ["S3", "S4", "S5"],
+      "required_metrics": []
+    },
+    {
+      "name": "CORROSION_DETECTED",
+      "status": "ACTIVE",
+      "domains_applicable": ["CHEMICAL", "FLUID", "STRUCTURE"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "CONDUCTIVITY_ANOMALY",
+      "status": "ACTIVE",
+      "domains_applicable": ["CHEMICAL", "FLUID"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": ["conductivity_ms"]
+    },
+    {
+      "name": "RADIATION_HIGH",
+      "status": "ACTIVE",
+      "domains_applicable": ["RADIATION", "ENVIRONMENT", "SAFETY"],
+      "severity_guidance": ["S3", "S4", "S5"],
+      "required_metrics": ["radiation_usvh"]
+    },
+    {
+      "name": "DOSE_RATE_EXCESS",
+      "status": "ACTIVE",
+      "domains_applicable": ["RADIATION"],
+      "severity_guidance": ["S3", "S4", "S5"],
+      "required_metrics": ["dose_msv"]
+    },
+    {
+      "name": "RADIATION_LEAK",
+      "status": "ACTIVE",
+      "domains_applicable": ["RADIATION", "STRUCTURE"],
+      "severity_guidance": ["S4", "S5"],
+      "required_metrics": []
+    },
+    {
+      "name": "DETECTOR_SATURATION",
+      "status": "ACTIVE",
+      "domains_applicable": ["RADIATION"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "SHIELDING_FAILURE",
+      "status": "ACTIVE",
+      "domains_applicable": ["RADIATION", "STRUCTURE"],
+      "severity_guidance": ["S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "BIO_CONTAMINATION",
+      "status": "ACTIVE",
+      "domains_applicable": ["BIOLOGICAL", "ENVIRONMENT", "PAYLOAD", "FLUID"],
+      "severity_guidance": ["S3", "S4", "S5"],
+      "required_metrics": ["bio_index"]
+    },
+    {
+      "name": "PATHOGEN_DETECTED",
+      "status": "ACTIVE",
+      "domains_applicable": ["BIOLOGICAL", "ENVIRONMENT"],
+      "severity_guidance": ["S4", "S5"],
+      "required_metrics": []
+    },
+    {
+      "name": "BIO_SENSOR_DEGRADATION",
+      "status": "ACTIVE",
+      "domains_applicable": ["BIOLOGICAL"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "STERILIZATION_FAILURE",
+      "status": "ACTIVE",
+      "domains_applicable": ["BIOLOGICAL", "PAYLOAD"],
+      "severity_guidance": ["S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "ACOUSTIC_OVERLOAD",
+      "status": "ACTIVE",
+      "domains_applicable": ["ACOUSTIC", "SENSING", "ENVIRONMENT"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["sound_pressure_db"]
+    },
+    {
+      "name": "ECHO_LOSS",
+      "status": "ACTIVE",
+      "domains_applicable": ["ACOUSTIC", "NAVIGATION"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "ACOUSTIC_INTERFERENCE",
+      "status": "ACTIVE",
+      "domains_applicable": ["ACOUSTIC"],
+      "severity_guidance": ["S1", "S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "SONAR_FAILURE",
+      "status": "ACTIVE",
+      "domains_applicable": ["ACOUSTIC"],
+      "severity_guidance": ["S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "MAGNETIC_INTERFERENCE",
+      "status": "ACTIVE",
+      "domains_applicable": ["MAGNETIC", "NAVIGATION", "SENSING"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["magnetic_field_ut"]
+    },
+    {
+      "name": "COMPASS_DRIFT",
+      "status": "ACTIVE",
+      "domains_applicable": ["MAGNETIC", "NAVIGATION"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": ["magnetic_field_ut"]
+    },
+    {
+      "name": "MAGNETIC_ANOMALY",
+      "status": "ACTIVE",
+      "domains_applicable": ["MAGNETIC", "ENVIRONMENT"],
+      "severity_guidance": ["S1", "S2", "S3"],
+      "required_metrics": ["magnetic_field_ut"]
+    },
+    {
+      "name": "HALL_SENSOR_FAILURE",
+      "status": "ACTIVE",
+      "domains_applicable": ["MAGNETIC"],
+      "severity_guidance": ["S3", "S4"],
+      "required_metrics": []
+    },
+    {
+      "name": "LENS_FOGGING",
+      "status": "ACTIVE",
+      "domains_applicable": ["OPTICAL", "SENSING", "PAYLOAD"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": ["light_intensity_lux"]
+    },
+    {
+      "name": "LASER_DEGRADATION",
+      "status": "ACTIVE",
+      "domains_applicable": ["OPTICAL"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["optical_power_dbm"]
+    },
+    {
+      "name": "FIBER_BREAK",
+      "status": "ACTIVE",
+      "domains_applicable": ["OPTICAL", "COMMUNICATION"],
+      "severity_guidance": ["S3", "S4", "S5"],
+      "required_metrics": ["optical_power_dbm"]
+    },
+    {
+      "name": "OPTICAL_ALIGNMENT_FAIL",
+      "status": "ACTIVE",
+      "domains_applicable": ["OPTICAL", "SENSING"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "PHOTO_SENSOR_SATURATION",
+      "status": "ACTIVE",
+      "domains_applicable": ["OPTICAL"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": ["light_intensity_lux"]
+    },
+    {
+      "name": "VIBRATION_EXCESS",
+      "status": "ACTIVE",
+      "domains_applicable": ["VIBRATION", "STRUCTURE", "PROPULSION", "ACTUATION"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["vibration_g"]
+    },
+    {
+      "name": "RESONANCE_DETECTED",
+      "status": "ACTIVE",
+      "domains_applicable": ["VIBRATION"],
+      "severity_guidance": ["S3", "S4"],
+      "required_metrics": ["vibration_g"]
+    },
+    {
+      "name": "DAMPING_FAILURE",
+      "status": "ACTIVE",
+      "domains_applicable": ["VIBRATION"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": []
+    },
+    {
+      "name": "FORCE_EXCESS",
+      "status": "ACTIVE",
+      "domains_applicable": ["FORCE_TORQUE", "ACTUATION", "END_EFFECTOR"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["force_n"]
+    },
+    {
+      "name": "TORQUE_LIMIT_EXCEEDED",
+      "status": "ACTIVE",
+      "domains_applicable": ["FORCE_TORQUE"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["torque_nm"]
+    },
+    {
+      "name": "ENCODER_LOSS",
+      "status": "ACTIVE",
+      "domains_applicable": ["ENCODER", "ACTUATION"],
+      "severity_guidance": ["S3", "S4"],
+      "required_metrics": ["encoder_pulses"]
+    },
+    {
+      "name": "ENCODER_DRIFT",
+      "status": "ACTIVE",
+      "domains_applicable": ["ENCODER"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": ["encoder_pulses"]
+    },
+    {
+      "name": "EMI_EXCESS",
+      "status": "ACTIVE",
+      "domains_applicable": ["EMI", "COMMUNICATION", "SENSING"],
+      "severity_guidance": ["S2", "S3", "S4"],
+      "required_metrics": ["emi_level_db"]
+    },
+    {
+      "name": "RF_INTERFERENCE",
+      "status": "ACTIVE",
+      "domains_applicable": ["EMI"],
+      "severity_guidance": ["S2", "S3"],
+      "required_metrics": ["emi_level_db"]
+    },
+    {
+      "name": "SHIELDING_BREACH",
+      "status": "ACTIVE",
+      "domains_applicable": ["EMI", "STRUCTURE"],
+      "severity_guidance": ["S3", "S4"],
+      "required_metrics": []
+    }
+  ],
+  "severity_levels": [
+    {
+      "name": "S0",
+      "definition": "Transient / Self-Resolved",
+      "allowed_actions": ["NONE"]
+    },
+    {
+      "name": "S1",
+      "definition": "Informational",
+      "allowed_actions": ["NONE", "MONITOR"]
+    },
+    {
+      "name": "S2",
+      "definition": "Maintenance Advisory",
+      "allowed_actions": ["MONITOR", "SERVICE_SOON"]
+    },
+    {
+      "name": "S3",
+      "definition": "Degraded Mode Required",
+      "allowed_actions": ["DEGRADE", "SERVICE_SOON", "RETURN_TO_BASE"]
+    },
+    {
+      "name": "S4",
+      "definition": "Controlled Safe Response Required",
+      "allowed_actions": ["RETURN_TO_BASE", "CONTROLLED_STOP"]
+    },
+    {
+      "name": "S5",
+      "definition": "Immediate Emergency Stop",
+      "allowed_actions": ["EMERGENCY_STOP"]
+    }
+  ],
+  "actions": [
+    "NONE",
+    "MONITOR",
+    "SERVICE_SOON",
+    "DEGRADE",
+    "RETURN_TO_BASE",
+    "CONTROLLED_STOP",
+    "EMERGENCY_STOP"
+  ]
+}
