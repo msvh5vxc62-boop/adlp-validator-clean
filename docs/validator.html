@@ -81,25 +81,7 @@
     <div id="result">Loading registry...</div>
   </div>
 
-  <script>
-let registryData = null;
-
-async function loadRegistry() {
-  const result = document.getElementById("result");
-
-  try {
-    const response = await fetch("./adlp_registry_v1.6.0.json");
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-    registryData = await response.json();
-    console.log("Loaded registry:", registryData);
-    result.textContent = "Registry loaded. Ready to validate.";
-  } catch (err) {
-    console.error("Registry failed to load:", err);
-    result.innerHTML = '<span class="bad">Registry failed to load.</span>';
-  }
-}
-
+<script>
 function collectAllObjects(node, out = []) {
   if (Array.isArray(node)) {
     for (const item of node) collectAllObjects(item, out);
@@ -116,8 +98,69 @@ function collectAllObjects(node, out = []) {
   return out;
 }
 
+function normalize(v) {
+  return String(v || "").trim().toUpperCase();
+}
+
+function buildPossibleCodes(item) {
+  const possible = new Set();
+
+  const directFields = [
+    item.code,
+    item.event_code,
+    item.packet_code,
+    item.packet,
+    item.full_code,
+    item.canonical_code
+  ];
+
+  directFields.forEach(v => {
+    if (v) possible.add(normalize(v));
+  });
+
+  const domain =
+    item.domain || item.domain_name || item.category || item.system;
+  const subsystem =
+    item.subsystem || item.subsystem_name || item.component || item.module;
+  const fault =
+    item.fault || item.event || item.condition || item.failure || item.name;
+  const severity =
+    item.severity || item.level || item.priority;
+
+  if (domain && subsystem && fault && severity) {
+    possible.add(
+      `${normalize(domain)}.${normalize(subsystem)}.${normalize(fault)}.${normalize(severity)}`
+    );
+  }
+
+  if (domain && fault && severity) {
+    possible.add(
+      `${normalize(domain)}.${normalize(fault)}.${normalize(severity)}`
+    );
+  }
+
+  return [...possible];
+}
+
+let registryData = null;
+
+async function loadRegistry() {
+  const result = document.getElementById("result");
+
+  try {
+    const response = await fetch("./adlp_registry_v1.6.0.json");
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    registryData = await response.json();
+    result.textContent = "Registry loaded. Ready to validate.";
+  } catch (err) {
+    console.error(err);
+    result.innerHTML = '<span class="bad">Registry failed to load.</span>';
+  }
+}
+
 function validateCode() {
-  const input = document.getElementById("eventInput").value.trim();
+  const input = normalize(document.getElementById("eventInput").value);
   const result = document.getElementById("result");
 
   if (!registryData) {
@@ -127,14 +170,10 @@ function validateCode() {
 
   const allObjects = collectAllObjects(registryData);
 
-  const found = allObjects.find(item =>
-    item.code === input ||
-    item.event_code === input ||
-    item.id === input ||
-    item.name === input ||
-    item.packet === input ||
-    item.packet_code === input
-  );
+  const found = allObjects.find(item => {
+    const codes = buildPossibleCodes(item);
+    return codes.includes(input);
+  });
 
   if (found) {
     result.innerHTML =
