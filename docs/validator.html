@@ -82,66 +82,69 @@
   </div>
 
   <script>
-    let registryData = null;
+let registryData = null;
 
-    async function loadRegistry() {
-      const result = document.getElementById("result");
+async function loadRegistry() {
+  const result = document.getElementById("result");
 
-      try {
-        const response = await fetch("./adlp_registry_v1.6.0.json");
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
+  try {
+    const response = await fetch("./adlp_registry_v1.6.0.json");
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-        registryData = await response.json();
-        console.log("Registry loaded:", registryData);
-        result.textContent = "Registry loaded. Ready to validate.";
-      } catch (err) {
-        console.error("Registry failed to load:", err);
-        result.innerHTML = '<span class="bad">Registry failed to load.</span>';
-      }
-    }
+    registryData = await response.json();
+    console.log("Loaded registry:", registryData);
+    result.textContent = "Registry loaded. Ready to validate.";
+  } catch (err) {
+    console.error("Registry failed to load:", err);
+    result.innerHTML = '<span class="bad">Registry failed to load.</span>';
+  }
+}
 
-    function validateCode() {
-      const input = document.getElementById("eventInput").value.trim();
-      const result = document.getElementById("result");
+function getEntries(data) {
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data.events)) return data.events;
+  if (Array.isArray(data.codes)) return data.codes;
+  if (Array.isArray(data.registry)) return data.registry;
+  if (Array.isArray(data.entries)) return data.entries;
+  if (data.registry && Array.isArray(data.registry.events)) return data.registry.events;
+  return null;
+}
 
-      if (!registryData) {
-        result.innerHTML = '<span class="bad">Registry is not loaded yet.</span>';
-        return;
-      }
+function validateCode() {
+  const input = document.getElementById("eventInput").value.trim();
+  const result = document.getElementById("result");
 
-      let entries = [];
+  if (!registryData) {
+    result.innerHTML = '<span class="bad">Registry is not loaded yet.</span>';
+    return;
+  }
 
-      if (Array.isArray(registryData)) {
-        entries = registryData;
-      } else if (Array.isArray(registryData.events)) {
-        entries = registryData.events;
-      } else if (Array.isArray(registryData.codes)) {
-        entries = registryData.codes;
-      } else {
-        result.innerHTML = '<span class="bad">Unknown JSON structure.</span>';
-        console.log("JSON structure:", registryData);
-        return;
-      }
+  const entries = getEntries(registryData);
 
-      const found = entries.find(item =>
-        item.code === input ||
-        item.id === input ||
-        item.event_code === input
-      );
+  if (!entries) {
+    result.innerHTML = '<span class="bad">Unknown JSON structure.</span>';
+    console.log("Actual JSON structure:", registryData);
+    return;
+  }
 
-      if (found) {
-        result.innerHTML =
-          '<span class="ok">Valid ADLP code.</span>\n\n' +
-          JSON.stringify(found, null, 2);
-      } else {
-        result.innerHTML =
-          '<span class="bad">Code not found in registry.</span>';
-      }
-    }
+  const found = entries.find(item =>
+    item.code === input ||
+    item.id === input ||
+    item.event_code === input ||
+    item.name === input
+  );
 
-    window.addEventListener("DOMContentLoaded", loadRegistry);
-  </script>
+  if (found) {
+    result.innerHTML =
+      '<span class="ok">Valid ADLP code.</span><br><br><pre>' +
+      JSON.stringify(found, null, 2) +
+      '</pre>';
+  } else {
+    result.innerHTML = '<span class="bad">Code not found in registry.</span>';
+  }
+}
+
+window.addEventListener("DOMContentLoaded", loadRegistry);
+</script>
 </body>
 </html>
