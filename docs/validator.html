@@ -98,10 +98,8 @@ let registryData = null;
 async function loadRegistry() {
   try {
     const response = await fetch("./adlp_registry_v1.6.0.json");
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-    registryData = await response.json();
+if (!response.ok) throw new Error(`HTTP ${response.status}`);
+registryData = await response.json();
     console.log("Registry loaded:", registryData);
   } catch (err) {
     console.error("Registry failed to load", err);
