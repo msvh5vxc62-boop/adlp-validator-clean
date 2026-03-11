@@ -2,11 +2,117 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=validator.html">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ADLP Validator</title>
+  <title>ADLP Registry Home</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+      margin: 0;
+      padding: 32px;
+    }
+
+    .card {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      color: #2d4f9d;
+      margin-top: 0;
+    }
+
+    nav a {
+      margin-right: 18px;
+      text-decoration: none;
+      color: #3c78b5;
+      font-weight: 600;
+    }
+
+    .hero {
+      margin-top: 24px;
+      padding: 20px;
+      background: #f7f7f7;
+      border-radius: 10px;
+    }
+
+    .button-row {
+      margin-top: 24px;
+    }
+
+    .button {
+      display: inline-block;
+      margin-right: 12px;
+      margin-top: 10px;
+      padding: 12px 18px;
+      border-radius: 20px;
+      text-decoration: none;
+      background: #2d4f9d;
+      color: white;
+      font-weight: 600;
+    }
+
+    .section {
+      margin-top: 28px;
+      line-height: 1.6;
+    }
+
+    code {
+      background: #f1f1f1;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
-  Redirecting to ADLP Validator...
+  <div class="card">
+    <h1>ADLP Registry</h1>
+
+    <nav>
+      <a href="./index.html">Home</a>
+      <a href="./registry.html">Registry</a>
+      <a href="./validator.html">Validator</a>
+    </nav>
+
+    <div class="hero">
+      <h2>Autonomous Diagnostic Language Protocol</h2>
+      <p>
+        ADLP is a structured diagnostic registry for autonomous and robotic systems.
+        It organizes diagnostic events by <b>domain</b>, <b>system</b>, <b>fault type</b>,
+        and <b>severity</b>.
+      </p>
+
+      <div class="button-row">
+        <a class="button" href="./validator.html">Open Validator</a>
+        <a class="button" href="./registry.html">Browse Registry</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Code Format</h2>
+      <p>
+        ADLP codes use the format:
+        <code>DOMAIN.SYSTEM.FAULT.SEVERITY</code>
+      </p>
+      <p>
+        Example:
+        <code>PROPULSION.MOTOR.OVERHEAT.S3</code>
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>What you can do here</h2>
+      <p>
+        Use the <b>Validator</b> to check whether a full ADLP code is valid against the registry.
+      </p>
+      <p>
+        Use the <b>Registry</b> page to explore domains, systems, fault types, and severity levels.
+      </p>
+    </div>
+  </div>
 </body>
 </html>
