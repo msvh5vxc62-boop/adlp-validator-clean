@@ -9,25 +9,54 @@
       font-family: Arial, sans-serif;
       background: #f3f3f3;
       margin: 0;
-      padding: 32px;
+      padding: 16px;
     }
 
     .card {
       max-width: 900px;
       margin: 0 auto;
       background: white;
-      padding: 32px;
+      padding: 24px;
       border-radius: 12px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .logo-wrap {
+      text-align: center;
+      margin-bottom: 20px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .logo {
+      width: 100%;
+      max-width: 200px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
     }
 
     h1 {
       color: #2d4f9d;
       margin-top: 0;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-top: 0;
+      margin-bottom: 24px;
+    }
+
+    nav {
+      text-align: center;
+      margin-bottom: 24px;
     }
 
     nav a {
-      margin-right: 18px;
+      margin: 0 10px;
       text-decoration: none;
       color: #3c78b5;
       font-weight: 600;
@@ -66,29 +95,37 @@
       padding: 2px 6px;
       border-radius: 4px;
     }
-  </style> .logo-wrap {
-  text-align: center;
-  margin-bottom: 20px;
-  width: 100%;
-  overflow: hidden;
-}
 
-.logo {
-  width: 100%;
-  max-width: 220px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
+    @media (max-width: 600px) {
+      .card {
+        padding: 20px;
+      }
+
+      .button {
+        display: block;
+        margin-right: 0;
+        text-align: center;
+      }
+
+      nav a {
+        display: inline-block;
+        margin: 6px 8px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="logo-wrap">
-  <img src="https://github.com/user-attachments/assets/4332f465-98cb-4d41-b21b-0c2701aa7d5c" alt="ADLP logo" class="logo">
-</div>
-<h1>ADLP Registry</h1>
-<p style="text-align:center; color:#666; margin-top:-8px;">
-  Autonomous Diagnostic Language Protocol
-</p>
+  <div class="card">
+    <div class="logo-wrap">
+      <img
+        src="https://github.com/user-attachments/assets/4332f465-98cb-4d41-b21b-0c2701aa7d5c"
+        alt="ADLP logo"
+        class="logo"
+      >
+    </div>
+
+    <h1>ADLP Registry</h1>
+    <p class="subtitle">Autonomous Diagnostic Language Protocol</p>
 
     <nav>
       <a href="./index.html">Home</a>
