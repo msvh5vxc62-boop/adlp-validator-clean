@@ -99,7 +99,7 @@ async function loadRegistry(){
 
 try{
 
-const response = await fetch("/registry/adlp_registry_v1.6.0.json");
+const response = await fetch("adlp_registry_v1.6.0.json");
 registryData = await response.json();
 
 }catch(err){
