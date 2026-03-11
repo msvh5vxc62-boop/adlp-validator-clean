@@ -82,66 +82,6 @@
   </div>
 
 <script>
-function collectAllObjects(node, out = []) {
-  if (Array.isArray(node)) {
-    for (const item of node) collectAllObjects(item, out);
-    return out;
-  }
-
-  if (node && typeof node === "object") {
-    out.push(node);
-    for (const value of Object.values(node)) {
-      collectAllObjects(value, out);
-    }
-  }
-
-  return out;
-}
-
-function normalize(v) {
-  return String(v || "").trim().toUpperCase();
-}
-
-function buildPossibleCodes(item) {
-  const possible = new Set();
-
-  const directFields = [
-    item.code,
-    item.event_code,
-    item.packet_code,
-    item.packet,
-    item.full_code,
-    item.canonical_code
-  ];
-
-  directFields.forEach(v => {
-    if (v) possible.add(normalize(v));
-  });
-
-  const domain =
-    item.domain || item.domain_name || item.category || item.system;
-  const subsystem =
-    item.subsystem || item.subsystem_name || item.component || item.module;
-  const fault =
-    item.fault || item.event || item.condition || item.failure || item.name;
-  const severity =
-    item.severity || item.level || item.priority;
-
-  if (domain && subsystem && fault && severity) {
-    possible.add(
-      `${normalize(domain)}.${normalize(subsystem)}.${normalize(fault)}.${normalize(severity)}`
-    );
-  }
-
-  if (domain && fault && severity) {
-    possible.add(
-      `${normalize(domain)}.${normalize(fault)}.${normalize(severity)}`
-    );
-  }
-
-  return [...possible];
-}
-
 let registryData = null;
 
 async function loadRegistry() {
@@ -154,13 +94,17 @@ async function loadRegistry() {
     registryData = await response.json();
     result.textContent = "Registry loaded. Ready to validate.";
   } catch (err) {
-    console.error(err);
+    console.error("Registry failed to load:", err);
     result.innerHTML = '<span class="bad">Registry failed to load.</span>';
   }
 }
 
+function normalize(value) {
+  return String(value || "").trim().toUpperCase();
+}
+
 function validateCode() {
-  const input = normalize(document.getElementById("eventInput").value);
+  const raw = document.getElementById("eventInput").value.trim();
   const result = document.getElementById("result");
 
   if (!registryData) {
@@ -168,21 +112,85 @@ function validateCode() {
     return;
   }
 
-  const allObjects = collectAllObjects(registryData);
+  const parts = raw.split(".").map(p => normalize(p)).filter(Boolean);
 
-  const found = allObjects.find(item => {
-    const codes = buildPossibleCodes(item);
-    return codes.includes(input);
-  });
-
-  if (found) {
+  if (parts.length !== 4) {
     result.innerHTML =
-      '<span class="ok">Valid ADLP code.</span><br><br><pre>' +
-      JSON.stringify(found, null, 2) +
-      '</pre>';
-  } else {
-    result.innerHTML = '<span class="bad">Code not found in registry.</span>';
+      '<span class="bad">Invalid format.</span><br><br>' +
+      'Expected format: DOMAIN.SYSTEM.FAULT.SEVERITY';
+    return;
   }
+
+  const [domain, systemName, faultName, severityName] = parts;
+
+  const systems = Array.isArray(registryData.systems) ? registryData.systems : [];
+  const faultTypes = Array.isArray(registryData.fault_types) ? registryData.fault_types : [];
+  const severityLevels = Array.isArray(registryData.severity_levels) ? registryData.severity_levels : [];
+
+  const system = systems.find(
+    s => normalize(s.domain) === domain && normalize(s.name) === systemName
+  );
+
+  if (!system) {
+    result.innerHTML =
+      '<span class="bad">Invalid system.</span><br><br>' +
+      `No active system found for <b>${domain}.${systemName}</b>.`;
+    return;
+  }
+
+  const fault = faultTypes.find(
+    f => normalize(f.name) === faultName
+  );
+
+  if (!fault) {
+    result.innerHTML =
+      '<span class="bad">Invalid fault type.</span><br><br>' +
+      `Fault <b>${faultName}</b> does not exist in registry.`;
+    return;
+  }
+
+  const applicableDomains = Array.isArray(fault.domains_applicable)
+    ? fault.domains_applicable.map(normalize)
+    : [];
+
+  if (!applicableDomains.includes(domain)) {
+    result.innerHTML =
+      '<span class="bad">Fault/domain mismatch.</span><br><br>' +
+      `Fault <b>${faultName}</b> is not applicable to domain <b>${domain}</b>.`;
+    return;
+  }
+
+  const severity = severityLevels.find(
+    s => normalize(s.name) === severityName
+  );
+
+  if (!severity) {
+    result.innerHTML =
+      '<span class="bad">Invalid severity.</span><br><br>' +
+      `Severity <b>${severityName}</b> does not exist in registry.`;
+    return;
+  }
+
+  const allowedSeverities = Array.isArray(fault.severity_guidance)
+    ? fault.severity_guidance.map(normalize)
+    : [];
+
+  if (!allowedSeverities.includes(severityName)) {
+    result.innerHTML =
+      '<span class="bad">Fault/severity mismatch.</span><br><br>' +
+      `Severity <b>${severityName}</b> is not allowed for fault <b>${faultName}</b>.`;
+    return;
+  }
+
+  result.innerHTML =
+    '<span class="ok">Valid ADLP code.</span><br><br>' +
+    `<b>Code:</b> ${domain}.${systemName}.${faultName}.${severityName}<br>` +
+    `<b>System:</b> ${system.name}<br>` +
+    `<b>Domain:</b> ${system.domain}<br>` +
+    `<b>Fault:</b> ${fault.name}<br>` +
+    `<b>Severity:</b> ${severity.name} — ${severity.definition}<br>` +
+    `<b>Allowed actions:</b> ${(severity.allowed_actions || []).join(", ")}<br>` +
+    `<b>Required metrics:</b> ${(fault.required_metrics || []).join(", ") || "None"}`;
 }
 
 window.addEventListener("DOMContentLoaded", loadRegistry);
