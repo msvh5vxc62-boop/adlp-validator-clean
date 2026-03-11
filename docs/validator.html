@@ -100,14 +100,20 @@ async function loadRegistry() {
   }
 }
 
-function getEntries(data) {
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data.events)) return data.events;
-  if (Array.isArray(data.codes)) return data.codes;
-  if (Array.isArray(data.registry)) return data.registry;
-  if (Array.isArray(data.entries)) return data.entries;
-  if (data.registry && Array.isArray(data.registry.events)) return data.registry.events;
-  return null;
+function collectAllObjects(node, out = []) {
+  if (Array.isArray(node)) {
+    for (const item of node) collectAllObjects(item, out);
+    return out;
+  }
+
+  if (node && typeof node === "object") {
+    out.push(node);
+    for (const value of Object.values(node)) {
+      collectAllObjects(value, out);
+    }
+  }
+
+  return out;
 }
 
 function validateCode() {
@@ -119,19 +125,15 @@ function validateCode() {
     return;
   }
 
-  const entries = getEntries(registryData);
+  const allObjects = collectAllObjects(registryData);
 
-  if (!entries) {
-    result.innerHTML = '<span class="bad">Unknown JSON structure.</span>';
-    console.log("Actual JSON structure:", registryData);
-    return;
-  }
-
-  const found = entries.find(item =>
+  const found = allObjects.find(item =>
     item.code === input ||
-    item.id === input ||
     item.event_code === input ||
-    item.name === input
+    item.id === input ||
+    item.name === input ||
+    item.packet === input ||
+    item.packet_code === input
   );
 
   if (found) {
