@@ -10,7 +10,7 @@
 
 
 <p align="center">
-Autonomous Defect Language Protocol
+Autonomous Diagnostic Language Protocol
 </p>
 
 <p align="center">
