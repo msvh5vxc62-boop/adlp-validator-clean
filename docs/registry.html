@@ -1,133 +1,106 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>ADLP Registry Explorer</title>
-
-<style>
-
-body{
-font-family: Arial, sans-serif;
-background:#f5f5f5;
-margin:0;
-padding:40px;
-}
-
-.container{
-max-width:900px;
-margin:auto;
-background:white;
-padding:40px;
-border-radius:10px;
-box-shadow:0 4px 12px rgba(0,0,0,0.1);
-}
-
-h1{
-color:#1f3c88;
-}
-
-nav{
-margin-bottom:30px;
-}
-
-nav a{
-margin-right:20px;
-text-decoration:none;
-font-weight:bold;
-color:#2980b9;
-}
-
-.domain{
-margin-top:20px;
-padding:10px;
-background:#eef3ff;
-border-radius:6px;
-}
-
-.system{
-margin-left:20px;
-margin-top:10px;
-}
-
-.fault{
-margin-left:40px;
-color:#444;
-}
-
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADLP Registry Explorer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+      margin: 0;
+      padding: 32px;
+    }
+    .card {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+    h1 {
+      color: #2d4f9d;
+      margin-top: 0;
+    }
+    nav a {
+      margin-right: 18px;
+      text-decoration: none;
+      color: #3c78b5;
+      font-weight: 600;
+    }
+    .item {
+      padding: 12px;
+      margin-top: 10px;
+      background: #f7f7f7;
+      border-radius: 8px;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+  </style>
 </head>
-
 <body>
+  <div class="card">
+    <h1>ADLP Registry Explorer</h1>
 
-<div class="container">
+    <nav>
+      <a href="./index.html">Home</a>
+      <a href="./registry.html">Registry</a>
+      <a href="./validator.html">Validator</a>
+    </nav>
 
-<h1>ADLP Registry Explorer</h1>
+    <div id="output">Loading registry...</div>
+  </div>
 
-<nav>
-<a href="index.html">Home</a>
-<a href="registry.html">Registry</a>
-<a href="validator.html">Validator</a>
-</nav>
+  <script>
+    function getEntries(data) {
+      if (Array.isArray(data)) return data;
+      if (Array.isArray(data.events)) return data.events;
+      if (Array.isArray(data.codes)) return data.codes;
+      if (Array.isArray(data.registry)) return data.registry;
+      if (Array.isArray(data.entries)) return data.entries;
+      if (data.registry && Array.isArray(data.registry.events)) return data.registry.events;
+      return null;
+    }
 
-<div id="registry"></div>
+    async function loadRegistry() {
+      const output = document.getElementById("output");
 
-</div>
+      try {
+        const response = await fetch("./adlp_registry_v1.6.0.json");
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-<script>
+        const data = await response.json();
+        console.log("Registry page JSON:", data);
 
-async function loadRegistry(){
+        const entries = getEntries(data);
 
-try{
+        if (!entries) {
+          output.innerHTML = "Registry loaded, but JSON structure is not recognized.";
+          return;
+        }
 
-const response = await fetch("/docs/registry/adlp_registry_v1.6.0.json");
-const data = await response.json();
+        if (entries.length === 0) {
+          output.innerHTML = "Registry is empty.";
+          return;
+        }
 
-const container = document.getElementById("registry");
+        output.innerHTML = "";
 
-data.domains.forEach(domain => {
+        entries.slice(0, 50).forEach(item => {
+          const div = document.createElement("div");
+          div.className = "item";
+          div.textContent = JSON.stringify(item, null, 2);
+          output.appendChild(div);
+        });
+      } catch (err) {
+        console.error("Failed to load registry:", err);
+        output.textContent = "Failed to load registry.";
+      }
+    }
 
-const domainDiv = document.createElement("div");
-domainDiv.className = "domain";
-domainDiv.innerHTML = "<strong>" + domain.name + "</strong>";
-
-container.appendChild(domainDiv);
-
-domain.systems.forEach(system => {
-
-const systemDiv = document.createElement("div");
-systemDiv.className = "system";
-systemDiv.innerHTML = system.name;
-
-domainDiv.appendChild(systemDiv);
-
-system.faults.forEach(fault => {
-
-const faultDiv = document.createElement("div");
-faultDiv.className = "fault";
-faultDiv.innerHTML = fault;
-
-systemDiv.appendChild(faultDiv);
-
-});
-
-});
-
-});
-
-}
-
-catch(err){
-
-document.getElementById("registry").innerHTML =
-"Failed to load registry.";
-
-}
-
-}
-
-loadRegistry();
-
-</script>
-
+    window.addEventListener("DOMContentLoaded", loadRegistry);
+  </script>
 </body>
 </html>
