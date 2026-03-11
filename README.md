@@ -21,7 +21,7 @@ A universal fault and event reporting protocol for autonomous machines.
 
 # Overview
 
-**ADLP (Autonomous Defect Language Protocol)** standardizes how machines report:
+**ADLP (Autonomous Diagnostic Language Protocol)** standardizes how machines report:
 
 - faults  
 - warnings  
