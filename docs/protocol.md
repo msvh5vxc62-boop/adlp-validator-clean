@@ -1,6 +1,6 @@
 # ADLP Protocol
 
-Autonomous Defect Language Protocol (ADLP) is a standardized format for reporting faults in autonomous systems.
+Autonomous Diagnostic Language Protocol (ADLP) is a standardized format for reporting faults in autonomous systems.
 
 The protocol allows machines to communicate failures in a structured way across:
 
