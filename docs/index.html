@@ -31,16 +31,23 @@
   --cond: 'Barlow Condensed', sans-serif;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  background: #0a0c0e; /* Safari pull-to-refresh color fix */
+}
 
 body {
+  background: #0a0c0e;
   background: var(--bg);
+  color: #d4d8de;
   color: var(--text);
   font-family: var(--sans);
   font-weight: 300;
   line-height: 1.6;
   min-height: 100vh;
+  min-height: -webkit-fill-available;
   overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
 }
 
 /* GRID BACKGROUND */
@@ -48,6 +55,7 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
+  top: 0; left: 0; right: 0; bottom: 0; /* inset fallback for older Safari */
   background-image:
     linear-gradient(rgba(245,166,35,0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(245,166,35,0.03) 1px, transparent 1px);
@@ -64,10 +72,11 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2.5rem;
+  padding: 0 1.25rem;
   height: 60px;
-  background: rgba(10,12,14,0.92);
-  border-bottom: 1px solid var(--border);
+  background: rgba(10,12,14,0.96);
+  border-bottom: 1px solid #1e2530;
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 }
 
@@ -96,16 +105,16 @@ nav {
 
 .nav-links {
   display: flex;
-  gap: 2rem;
+  gap: 1.25rem;
   list-style: none;
 }
 
 .nav-links a {
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--text-dim);
   text-decoration: none;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   transition: color 0.2s;
 }
@@ -114,9 +123,17 @@ nav {
 
 .nav-version {
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--text-faint);
   letter-spacing: 0.05em;
+  white-space: nowrap;
+  display: none; /* hidden on mobile, shown on desktop */
+}
+
+@media (min-width: 700px) {
+  nav { padding: 0 2.5rem; }
+  .nav-version { display: block; }
+  .nav-links { gap: 2rem; }
 }
 
 /* HERO */
@@ -127,9 +144,13 @@ nav {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 120px 2.5rem 80px;
+  padding: 100px 1.25rem 80px;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+@media (min-width: 700px) {
+  .hero { padding: 120px 2.5rem 80px; }
 }
 
 .hero-tag {
@@ -317,9 +338,16 @@ nav {
 .stats-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2.5rem;
+  padding: 0 1.25rem;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 700px) {
+  .stats-inner {
+    padding: 0 2.5rem;
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .stat {
@@ -358,7 +386,11 @@ section {
 .section-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 5rem 2.5rem;
+  padding: 3rem 1.25rem;
+}
+
+@media (min-width: 700px) {
+  .section-inner { padding: 5rem 2.5rem; }
 }
 
 .section-label {
@@ -596,10 +628,14 @@ footer {
 
 @media (max-width: 900px) {
   .hero-code { display: none; }
-  .stats-inner { grid-template-columns: repeat(2, 1fr); }
   .event-grid { grid-template-columns: 1fr 1fr; }
   .how-grid { grid-template-columns: 1fr; }
   .cta-inner { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 500px) {
+  .event-grid { grid-template-columns: 1fr; }
+  .stat { padding-left: 1rem; padding-right: 1rem; }
 }
 ```
 
@@ -623,6 +659,7 @@ footer {
   <!-- HERO -->
 
   <div class="hero">
+    <img src="https://github.com/user-attachments/assets/4332f465-98cb-4d41-b21b-0c2701aa7d5c" alt="ADLP Logo" style="width: 72px; height: auto; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.6s ease forwards 0.05s;" />
     <div class="hero-tag">Open Protocol Standard</div>
     <h1 class="hero-title">Autonomous<br>Diagnostic<br><span>Language</span><br>Protocol</h1>
     <p class="hero-subtitle">ADLP · A Universal Machine Fault Standard</p>
