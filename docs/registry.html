@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ADLP Registry Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@300;400;600;700&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+```
+:root {
+  --bg: #0a0c0e;
+  --bg2: #0f1215;
+  --bg3: #141820;
+  --amber: #f5a623;
+  --amber-dim: #c4821a;
+  --amber-glow: rgba(245,166,35,0.12);
+  --red: #e84040;
+  --green: #3ecf6a;
+  --blue: #4a9eff;
+  --text: #d4d8de;
+  --text-dim: #7a8190;
+  --text-faint: #3a4050;
+  --border: #1e2530;
+  --border-amber: rgba(245,166,35,0.3);
+  --mono: 'Share Tech Mono', 'Courier New', monospace;
+  --sans: 'Barlow', system-ui, -apple-system, sans-serif;
+  --cond: 'Barlow Condensed', 'Arial Narrow', system-ui, sans-serif;
+}
+
+html { background: #0a0c0e; }
+
+body {
+  background: #0a0c0e;
+  background: #0a0c0e;
+  color: #d4d8de;
+  color: #d4d8de;
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.6;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  -webkit-text-size-adjust: 100%;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(rgba(245,166,35,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245,166,35,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  height: 60px;
+  background: rgba(10,12,14,0.96);
+  border-bottom: 1px solid #1e2530;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+@media (min-width: 700px) { nav { padding: 0 2.5rem; } }
+
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: #f5a623;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.nav-logo .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #f5a623;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(245,166,35,0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(245,166,35,0); }
+}
+
+.nav-links { display: flex; gap: 1.25rem; list-style: none; }
+.nav-links a {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: #7a8190;
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: #f5a623; }
+
+.nav-version {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: #3a4050;
+  display: none;
+}
+
+@media (min-width: 700px) {
+  .nav-links { gap: 2rem; }
+  .nav-version { display: block; }
+}
+
+/* PAGE HEADER */
+.page-header {
+  position: relative;
+  z-index: 1;
+  padding: 80px 1.25rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-bottom: 1px solid #1e2530;
+}
+
+@media (min-width: 700px) {
+  .page-header { padding: 100px 2.5rem 2.5rem; }
+}
+
+.page-tag {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: #f5a623;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.page-tag::before { content: ''; width: 24px; height: 1px; background: #f5a623; }
+
+.page-title {
+  font-family: var(--cond);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.page-desc {
+  color: #7a8190;
+  font-size: 0.9rem;
+}
+
+/* LAYOUT */
+.registry-layout {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.25rem 4rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  min-height: calc(100vh - 200px);
+}
+
+@media (min-width: 800px) {
+  .registry-layout {
+    padding: 0 2.5rem 4rem;
+    grid-template-columns: 260px 1fr;
+  }
+}
+
+/* SIDEBAR */
+.sidebar {
+  border-right: 1px solid #1e2530;
+  padding: 2rem 1.5rem 2rem 0;
+  position: sticky;
+  top: 60px;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+}
+
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: #1e2530; }
+
+.sidebar-label {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: #3a4050;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.sidebar-label:first-child { margin-top: 0; }
+
+/* SEARCH */
+.search-box {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.search-box input {
+  width: 100%;
+  background: #0f1215;
+  border: 1px solid #1e2530;
+  color: #d4d8de;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  padding: 0.6rem 0.75rem 0.6rem 2rem;
+  outline: none;
+  transition: border-color 0.2s;
+  letter-spacing: 0.05em;
+}
+
+.search-box input:focus { border-color: rgba(245,166,35,0.3); }
+.search-box input::placeholder { color: #3a4050; }
+
+.search-icon {
+  position: absolute;
+  left: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #3a4050;
+  font-size: 0.7rem;
+  font-family: var(--mono);
+}
+
+.domain-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  margin-bottom: 2px;
+}
+
+.domain-nav-item:hover {
+  background: #0f1215;
+  border-color: #1e2530;
+}
+
+.domain-nav-item.active {
+  background: rgba(245,166,35,0.12);
+  border-color: rgba(245,166,35,0.3);
+}
+
+.domain-nav-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #f5a623;
+  flex-shrink: 0;
+}
+
+.domain-nav-name {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: #d4d8de;
+  letter-spacing: 0.05em;
+}
+
+.domain-nav-item.active .domain-nav-name { color: #f5a623; }
+
+/* MAIN CONTENT */
+.registry-main {
+  padding: 2rem 0 2rem 2.5rem;
+}
+
+/* LOADING */
+.loading-state {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 3rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: #7a8190;
+}
+
+.spinner {
+  width: 14px; height: 14px;
+  border: 2px solid #1e2530;
+  border-top-color: #f5a623;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* DOMAIN SECTION */
+.domain-section { display: none; }
+.domain-section.active { display: block; }
+
+.domain-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #1e2530;
+}
+
+.domain-name {
+  font-family: var(--cond);
+  font-size: 2rem;
+  font-weight: 900;
+  color: #fff;
+}
+
+.domain-name span { color: #f5a623; }
+
+.domain-badge {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: #f5a623;
+  background: rgba(245,166,35,0.12);
+  border: 1px solid rgba(245,166,35,0.3);
+  padding: 0.3rem 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+.system-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.system-card {
+  background: #0f1215;
+  border: 1px solid #1e2530;
+  transition: border-color 0.2s;
+}
+
+.system-card:hover { border-color: rgba(245,166,35,0.3); }
+
+.system-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #1e2530;
+  background: #141820;
+}
+
+.system-name {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: #f5a623;
+  letter-spacing: 0.08em;
+}
+
+.system-count {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: #3a4050;
+}
+
+.fault-list {
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fault-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.fault-code {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: #d4d8de;
+}
+
+.fault-severities {
+  display: flex;
+  gap: 3px;
+}
+
+.sev-badge {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  padding: 0.1rem 0.35rem;
+  border: 1px solid;
+}
+
+.sev-badge.s1 { color: #4a9eff; border-color: rgba(74,158,255,0.3); background: rgba(74,158,255,0.08); }
+.sev-badge.s2 { color: #f5a623; border-color: rgba(245,166,35,0.3); background: rgba(245,166,35,0.12); }
+.sev-badge.s3 { color: #f97316; border-color: rgba(249,115,22,0.3); background: rgba(249,115,22,0.08); }
+.sev-badge.s4 { color: #e84040; border-color: rgba(232,64,64,0.3); background: rgba(232,64,64,0.08); }
+
+/* OVERVIEW TAB */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: #1e2530;
+  border: 1px solid #1e2530;
+  margin-bottom: 2rem;
+}
+
+.overview-stat {
+  background: #0f1215;
+  padding: 1.5rem;
+}
+
+.overview-stat-val {
+  font-family: var(--cond);
+  font-size: 2rem;
+  font-weight: 900;
+  color: #f5a623;
+}
+
+.overview-stat-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: #7a8190;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 0.2rem;
+}
+
+.severity-table {
+  background: #0f1215;
+  border: 1px solid #1e2530;
+}
+
+.sev-table-row {
+  display: grid;
+  grid-template-columns: 60px 100px 1fr 100px;
+  align-items: center;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid #1e2530;
+  gap: 1rem;
+}
+
+.sev-table-row:last-child { border-bottom: none; }
+
+.sev-table-row.header {
+  background: #141820;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: #3a4050;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.sev-code {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.sev-name {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+}
+
+.sev-desc { font-size: 0.82rem; color: #7a8190; }
+
+.sev-action {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  text-align: right;
+}
+
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid #1e2530;
+  padding: 1.5rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-left { font-family: var(--mono); font-size: 0.65rem; color: #3a4050; }
+.footer-right { font-family: var(--mono); font-size: 0.65rem; color: #3a4050; }
+.footer-right a { color: #c4821a; text-decoration: none; }
+
+@media (max-width: 800px) {
+  .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid #1e2530; padding: 1.5rem 0; }
+  .registry-main { padding: 1.5rem 0; }
+  .overview-grid { grid-template-columns: 1fr 1fr; }
+  .sev-table-row { grid-template-columns: 50px 80px 1fr; }
+  .sev-action { display: none; }
+}
+
+@media (max-width: 500px) {
+  .overview-grid { grid-template-columns: 1fr 1fr; }
+  .system-grid { grid-template-columns: 1fr; }
+}
+```
+
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <span class="dot"></span>ADLP
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="registry.html" class="active">Registry</a></li>
+      <li><a href="validator.html">Validator</a></li>
+    </ul>
+    <span class="nav-version">Protocol v1.0 · Registry v1.6.0</span>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-tag">Registry v1.6.0</div>
+    <h1 class="page-title">Registry Explorer</h1>
+    <p class="page-desc">Browse all domains, systems, fault types, and severity levels defined in the current registry.</p>
+  </div>
+
+  <div class="registry-layout">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="search-box">
+        <span class="search-icon">⌕</span>
+        <input type="text" id="searchInput" placeholder="Search registry..." autocomplete="off" />
+      </div>
+
+```
+  <div class="sidebar-label">Overview</div>
+  <div class="domain-nav-item active" data-domain="overview" onclick="showDomain('overview', this)">
+    <div class="domain-nav-dot" style="background: #4a9eff"></div>
+    <span class="domain-nav-name">All Domains</span>
+  </div>
+
+  <div class="sidebar-label">Domains</div>
+  <div id="domainNav">
+    <div class="loading-state" style="padding:1rem 0;">
+      <div class="spinner"></div>
+      <span>Loading...</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="registry-main">
+  <div id="loadingMain" class="loading-state">
+    <div class="spinner"></div>
+    <span>Loading registry from adlp_registry_v1.6.0.json...</span>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div id="section-overview" class="domain-section">
+    <div class="overview-grid">
+      <div class="overview-stat">
+        <div class="overview-stat-val" id="statDomains">—</div>
+        <div class="overview-stat-label">Domains</div>
+      </div>
+      <div class="overview-stat">
+        <div class="overview-stat-val" id="statSystems">—</div>
+        <div class="overview-stat-label">Systems</div>
+      </div>
+      <div class="overview-stat">
+        <div class="overview-stat-val" id="statFaults">—</div>
+        <div class="overview-stat-label">Fault Types</div>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--cond); font-size:1.1rem; font-weight:700; color:#fff; margin-bottom:1rem; letter-spacing:0.05em;">SEVERITY LEVELS</h3>
+    <div class="severity-table">
+      <div class="sev-table-row header">
+        <span>Code</span><span>Level</span><span>Description</span><span>Response</span>
+      </div>
+      <div class="sev-table-row">
+        <span class="sev-code" style="color:#4a9eff">S1</span>
+        <span class="sev-name" style="color:#4a9eff">Info</span>
+        <span class="sev-desc">Informational — normal operational event</span>
+        <span class="sev-action" style="color:#4a9eff">Log</span>
+      </div>
+      <div class="sev-table-row">
+        <span class="sev-code" style="color:#f5a623">S2</span>
+        <span class="sev-name" style="color:#f5a623">Warning</span>
+        <span class="sev-desc">Degraded performance or approaching limits</span>
+        <span class="sev-action" style="color:#f5a623">Monitor</span>
+      </div>
+      <div class="sev-table-row">
+        <span class="sev-code" style="color:#f97316">S3</span>
+        <span class="sev-name" style="color:#f97316">Error</span>
+        <span class="sev-desc">Significant fault requiring operator attention</span>
+        <span class="sev-action" style="color:#f97316">Intervene</span>
+      </div>
+      <div class="sev-table-row">
+        <span class="sev-code" style="color:#e84040">S4</span>
+        <span class="sev-name" style="color:#e84040">Critical</span>
+        <span class="sev-desc">Safety-critical failure — immediate action required</span>
+        <span class="sev-action" style="color:#e84040">Emergency</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOMAIN SECTIONS rendered by JS -->
+  <div id="domainSections"></div>
+</div>
+```
+
+  </div>
+
+  <footer>
+    <span class="footer-left">ADLP™ · Registry v1.6.0</span>
+    <span class="footer-right"><a href="https://github.com/msvh5vxc62-boop/adlp-validator-clean">GitHub ↗</a></span>
+  </footer>
+
+  <script>
+    const REGISTRY_URL = './adlp_registry_v1.6.0.json';
+    let registry = null;
+
+    function showDomain(id, el) {
+      document.querySelectorAll('.domain-nav-item').forEach(i => i.classList.remove('active'));
+      document.querySelectorAll('.domain-section').forEach(s => s.classList.remove('active'));
+      if (el) el.classList.add('active');
+      const sec = document.getElementById('section-' + id);
+      if (sec) sec.classList.add('active');
+    }
+
+    function sevClass(s) {
+      if (!s) return '';
+      return 's' + s.toString().replace(/\D/g,'');
+    }
+
+    function buildSeverityBadges(sevs) {
+      if (!sevs || !sevs.length) return '';
+      return sevs.map(s => {
+        const cls = sevClass(s);
+        return `<span class="sev-badge ${cls}">${s}</span>`;
+      }).join('');
+    }
+
+    function buildDomainSection(domainKey, domainData) {
+      const systems = domainData.systems || {};
+      const systemKeys = Object.keys(systems);
+
+      const cardsHtml = systemKeys.map(sysKey => {
+        const sysData = systems[sysKey];
+        const faults = sysData.fault_types || {};
+        const faultKeys = Object.keys(faults);
+
+        const faultRows = faultKeys.map(fk => {
+          const fd = faults[fk];
+          const sevs = fd.allowed_severities || fd.severities || [];
+          return `
+            <div class="fault-item">
+              <span class="fault-code">${fk}</span>
+              <div class="fault-severities">${buildSeverityBadges(sevs)}</div>
+            </div>`;
+        }).join('');
+
+        return `
+          <div class="system-card">
+            <div class="system-header">
+              <span class="system-name">${sysKey}</span>
+              <span class="system-count">${faultKeys.length} fault type${faultKeys.length !== 1 ? 's' : ''}</span>
+            </div>
+            <div class="fault-list">${faultRows || '<span style="font-family:var(--mono);font-size:0.7rem;color:var(--text-faint)">No faults defined</span>'}</div>
+          </div>`;
+      }).join('');
+
+      return `
+        <div id="section-${domainKey}" class="domain-section">
+          <div class="domain-header">
+            <div>
+              <div class="domain-name"><span>${domainKey}</span></div>
+              <div style="font-family:var(--mono);font-size:0.7rem;color:#7a8190;margin-top:0.3rem;">${systemKeys.length} system${systemKeys.length !== 1 ? 's' : ''}</div>
+            </div>
+            <span class="domain-badge">Registry v1.6.0</span>
+          </div>
+          <div class="system-grid">${cardsHtml}</div>
+        </div>`;
+    }
+
+    async function loadRegistry() {
+      try {
+        const res = await fetch(REGISTRY_URL);
+        registry = await res.json();
+
+        document.getElementById('loadingMain').style.display = 'none';
+        document.getElementById('section-overview').classList.add('active');
+
+        // Registry uses flat arrays:
+        // domains: [{ name, status }, ...]
+        // systems: [{ domain, name, status }, ...]
+        // fault_types: [{ name, domains_applicable, severity_guidance, ... }, ...]
+        const domainArr   = registry.domains    || [];
+        const systemArr   = registry.systems    || [];
+        const faultArr    = registry.fault_types || registry.faults || [];
+
+        // Build lookup: domainName -> { systems: { sysName -> { faults: [] } } }
+        const domainMap = {};
+        domainArr.forEach(d => {
+          if (d.name) domainMap[d.name] = { systems: {} };
+        });
+
+        // Attach systems to their domain
+        systemArr.forEach(s => {
+          const dom = s.domain;
+          const sysName = s.name;
+          if (!dom || !sysName) return;
+          if (!domainMap[dom]) domainMap[dom] = { systems: {} };
+          domainMap[dom].systems[sysName] = { faults: [] };
+        });
+
+        // Attach fault types to applicable domains/systems
+        faultArr.forEach(f => {
+          const applicable = f.domains_applicable || [];
+          const sevs = f.severity_guidance || f.severities || [];
+          applicable.forEach(domName => {
+            if (!domainMap[domName]) return;
+            // Add to all systems in that domain
+            Object.keys(domainMap[domName].systems).forEach(sysName => {
+              domainMap[domName].systems[sysName].faults.push({ name: f.name, sevs });
+            });
+          });
+        });
+
+        const domainKeys = Object.keys(domainMap);
+
+        // Stats
+        let totalSystems = 0, totalFaults = new Set();
+        domainKeys.forEach(dk => {
+          totalSystems += Object.keys(domainMap[dk].systems).length;
+        });
+        faultArr.forEach(f => totalFaults.add(f.name));
+
+        document.getElementById('statDomains').textContent = domainKeys.length;
+        document.getElementById('statSystems').textContent = totalSystems;
+        document.getElementById('statFaults').textContent = totalFaults.size;
+
+        // Build sidebar nav
+        const nav = document.getElementById('domainNav');
+        nav.innerHTML = domainKeys.map(dk => `
+          <div class="domain-nav-item" data-domain="${dk}" onclick="showDomain('${dk}', this)">
+            <div class="domain-nav-dot"></div>
+            <span class="domain-nav-name">${dk}</span>
+          </div>`).join('');
+
+        // Build domain sections
+        const sectionsEl = document.getElementById('domainSections');
+        sectionsEl.innerHTML = domainKeys.map(dk => {
+          const systems = domainMap[dk].systems;
+          const sysKeys = Object.keys(systems);
+
+          const cardsHtml = sysKeys.map(sysKey => {
+            const faults = systems[sysKey].faults;
+            const faultRows = faults.map(f => `
+              <div class="fault-item">
+                <span class="fault-code">${f.name}</span>
+                <div class="fault-severities">${buildSeverityBadges(f.sevs)}</div>
+              </div>`).join('');
+
+            return `
+              <div class="system-card">
+                <div class="system-header">
+                  <span class="system-name">${sysKey}</span>
+                  <span class="system-count">${faults.length} fault type${faults.length !== 1 ? 's' : ''}</span>
+                </div>
+                <div class="fault-list">${faultRows || '<span style="font-size:0.7rem;color:#3a4050">No faults mapped</span>'}</div>
+              </div>`;
+          }).join('');
+
+          return `
+            <div id="section-${dk}" class="domain-section">
+              <div class="domain-header">
+                <div>
+                  <div class="domain-name"><span>${dk}</span></div>
+                  <div style="font-size:0.7rem;color:#7a8190;margin-top:0.3rem;">${sysKeys.length} system${sysKeys.length !== 1 ? 's' : ''}</div>
+                </div>
+                <span class="domain-badge">Registry v1.6.0</span>
+              </div>
+              <div class="system-grid">${cardsHtml || '<span style="color:#7a8190;font-size:0.85rem;">No systems defined</span>'}</div>
+            </div>`;
+        }).join('');
+
+        // Search
+        document.getElementById('searchInput').addEventListener('input', function() {
+          const q = this.value.trim().toLowerCase();
+          document.querySelectorAll('.domain-nav-item[data-domain]').forEach(el => {
+            const d = el.dataset.domain.toLowerCase();
+            el.style.display = !q || d.includes(q) ? '' : 'none';
+          });
+        });
+
+      } catch (e) {
+        document.getElementById('loadingMain').innerHTML =
+          `<span style="color:#e84040; font-size:0.75rem;">Failed to load registry: ${e.message}</span>`;
+        document.getElementById('section-overview').classList.add('active');
+      }
+    }
+
+    loadRegistry();
+  </script>
+
+</body>
+</html>
