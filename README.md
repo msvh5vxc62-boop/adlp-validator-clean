@@ -46,7 +46,7 @@ ADLP consists of four main components:
 
 | Component | Description |
 |---|---|
-| Registry | Defines domains, systems, and fault types |
+| Registry | Defines domains, systems, fault types, and severity rules |
 | Packet schema | Standard JSON event format |
 | Validator | Reference implementation for validating packets |
 | Mapping helper | Tool for mapping internal device errors to ADLP |
@@ -74,7 +74,7 @@ These allow machines to report both **failures and health events**.
 ```json
 {
   "adlp_version": "1.0",
-  "registry_version": "1.5.0",
+  "registry_version": "1.6.0",
   "canonical_code": "PROPULSION.MOTOR.OVERHEAT.S3",
   "event": {
     "event_type": "FAULT",
@@ -100,7 +100,7 @@ adlp-validator/
 │   └─ report.py
 │
 ├─ registry/
-│   └─ adlp_registry_v1.5.0.json
+│   └─ adlp_registry_v1.6.0.json
 │
 ├─ examples/
 │   ├─ valid/
@@ -112,6 +112,12 @@ adlp-validator/
 ├─ tools/
 │   └─ mapping_helper/
 │       └─ adlp_mapping_helper.py
+│
+├─ docs/
+│   ├─ index.html
+│   ├─ registry.html
+│   ├─ validator.html
+│   └─ adlp_registry_v1.6.0.json
 │
 └─ README.md
 ```
@@ -135,21 +141,21 @@ Validate a single packet:
 
 ```bash
 python -m adlp_validator.cli examples/valid/valid_packet_01.json \
-  --registry registry/adlp_registry_v1.5.0.json
+  --registry registry/adlp_registry_v1.6.0.json
 ```
 
 Validate multiple packets (directory mode):
 
 ```bash
 python -m adlp_validator.cli examples/valid \
-  --registry registry/adlp_registry_v1.5.0.json
+  --registry registry/adlp_registry_v1.6.0.json
 ```
 
 Generate JSON validation reports:
 
 ```bash
 python -m adlp_validator.cli examples/valid \
-  --registry registry/adlp_registry_v1.5.0.json \
+  --registry registry/adlp_registry_v1.6.0.json \
   --json-report
 ```
 
@@ -206,7 +212,7 @@ E1023 -> PROPULSION.MOTOR.OVERHEAT.S3
 | Component | Version |
 |---|---|
 | Protocol | 1.0 |
-| Registry | 1.5.0 |
+| Registry | 1.6.0 |
 
 Packets must declare both versions for compatibility.
 
@@ -221,6 +227,18 @@ ADLP aims to provide:
 - improved telemetry analysis  
 - easier fleet monitoring  
 - compatibility across robotics ecosystems  
+
+---
+
+# Web Interface
+
+The repository also includes a lightweight web interface in `docs/` with:
+
+- Home page  
+- Registry explorer  
+- Packet validator  
+
+This allows developers and companies to explore the protocol directly in the browser.
 
 ---
 
