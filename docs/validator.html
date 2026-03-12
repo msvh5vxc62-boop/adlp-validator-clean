@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>ADLP Packet Validator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@300;400;600&family=Barlow+Condensed:wght@900&display=swap" rel="stylesheet">
+<style>
+html,body{background:#0a0c0e;color:#d4d8de;font-family:'Barlow',system-ui,sans-serif;font-weight:300;margin:0;padding:0;min-height:100vh;-webkit-text-size-adjust:100%;}
+*{box-sizing:border-box;}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background-image:linear-gradient(rgba(245,166,35,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(245,166,35,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;height:60px;background:rgba(10,12,14,0.96);border-bottom:1px solid #1e2530;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);}
+.nav-logo{font-family:'Share Tech Mono',monospace;font-size:0.85rem;color:#f5a623;letter-spacing:0.15em;text-decoration:none;display:flex;align-items:center;gap:0.6rem;}
+.dot{width:8px;height:8px;border-radius:50%;background:#f5a623;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,166,35,0.4);}50%{box-shadow:0 0 0 6px rgba(245,166,35,0);}}
+.nav-links{display:flex;gap:1.25rem;list-style:none;margin:0;padding:0;}
+.nav-links a{font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:#7a8190;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;}
+.nav-links a.active{color:#f5a623;}
+.wrap{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:80px 1.25rem 4rem;}
+.tag{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#f5a623;letter-spacing:0.25em;text-transform:uppercase;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.75rem;}
+.tag::before{content:'';width:24px;height:1px;background:#f5a623;}
+h1{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-size:2.8rem;font-weight:900;font-stretch:condensed;text-transform:uppercase;color:#fff;margin:0 0 0.5rem;}
+.desc{color:#7a8190;font-size:0.9rem;margin-bottom:2rem;}
+.card{background:#0f1215;border:1px solid #1e2530;margin-bottom:1rem;}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1.25rem;border-bottom:1px solid #1e2530;background:#141820;}
+.card-head span{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#7a8190;letter-spacing:0.1em;text-transform:uppercase;}
+#regStatus{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#7a8190;padding:0.15rem 0.5rem;border:1px solid #1e2530;}
+.card-body{padding:1.25rem;}
+.tabs{display:flex;border:1px solid #1e2530;background:#141820;margin-bottom:1.25rem;}
+.tab{flex:1;font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.65rem;text-align:center;cursor:pointer;color:#7a8190;background:none;border:none;-webkit-appearance:none;}
+.tab.active{color:#f5a623;background:rgba(245,166,35,0.12);}
+.lbl{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:#7a8190;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;}
+input[type=text],textarea{width:100%;background:#0a0c0e;border:1px solid #1e2530;color:#f5a623;font-family:'Share Tech Mono',monospace;font-size:0.85rem;padding:0.85rem 1rem;outline:none;-webkit-appearance:none;border-radius:0;}
+input[type=text]:focus,textarea:focus{border-color:rgba(245,166,35,0.4);}
+input::placeholder,textarea::placeholder{color:#3a4050;}
+textarea{resize:vertical;min-height:160px;font-size:0.72rem;color:#d4d8de;line-height:1.7;}
+.examples{margin-top:1rem;}
+.ex-lbl{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:#3a4050;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;}
+.ex-btn{display:block;width:100%;font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#7a8190;background:#0a0c0e;border:1px solid #1e2530;padding:0.4rem 0.75rem;margin-bottom:0.35rem;text-align:left;cursor:pointer;-webkit-appearance:none;border-radius:0;}
+.ex-btn:active{color:#f5a623;border-color:rgba(245,166,35,0.4);}
+.validate-btn{display:block;width:100%;margin-top:1.25rem;background:#f5a623;color:#000;font-family:'Share Tech Mono',monospace;font-size:1rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:1rem;border:none;cursor:pointer;-webkit-appearance:none;border-radius:0;min-height:54px;}
+.validate-btn:active{background:#ffc04a;}
+.result-idle{padding:2.5rem 1.25rem;text-align:center;font-family:'Share Tech Mono',monospace;font-size:0.72rem;color:#3a4050;}
+.status-bar{display:flex;align-items:center;gap:0.75rem;padding:1rem 1.25rem;margin-bottom:1rem;border-left:3px solid;}
+.status-bar.ok{background:rgba(62,207,106,0.08);border-color:#3ecf6a;}
+.status-bar.fail{background:rgba(232,64,64,0.08);border-color:#e84040;}
+.status-txt{font-family:'Share Tech Mono',monospace;font-size:0.8rem;font-weight:600;letter-spacing:0.1em;}
+.status-bar.ok .status-txt{color:#3ecf6a;}
+.status-bar.fail .status-txt{color:#e84040;}
+.row{display:flex;align-items:center;gap:0.75rem;padding:0.6rem 0.85rem;background:#0a0c0e;border:1px solid #1e2530;margin-bottom:0.4rem;}
+.chk{font-family:'Share Tech Mono',monospace;font-size:0.75rem;width:16px;flex-shrink:0;}
+.chk.ok{color:#3ecf6a;}.chk.fail{color:#e84040;}
+.rkey{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#7a8190;width:100px;flex-shrink:0;}
+.rval{font-family:'Share Tech Mono',monospace;font-size:0.75rem;color:#f5a623;}
+.rval.bad{color:#e84040;}.rval.good{color:#3ecf6a;}
+.err-item{display:flex;gap:0.75rem;padding:0.6rem 0.85rem;background:rgba(232,64,64,0.08);border:1px solid rgba(232,64,64,0.15);border-left:2px solid #e84040;margin-bottom:0.35rem;font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:#d4d8de;}
+.err-dot{color:#e84040;flex-shrink:0;}
+.ref{margin-top:2.5rem;padding-top:2rem;border-top:1px solid #1e2530;}
+.ref h2{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-size:1.3rem;font-weight:900;color:#fff;margin:0 0 1rem;}
+.ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.ref-card{background:#0f1215;border:1px solid #1e2530;padding:1rem;}
+.ref-title{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:#f5a623;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid #1e2530;}
+.ref-row{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#7a8190;padding:0.2rem 0;display:flex;justify-content:space-between;}
+.ref-row span{color:#d4d8de;}
+footer{position:relative;z-index:1;border-top:1px solid #1e2530;padding:1.5rem 1.25rem;display:flex;justify-content:space-between;max-width:700px;margin:0 auto;}
+footer span{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#3a4050;}
+footer a{color:#c4821a;text-decoration:none;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo"><span class="dot"></span>ADLP</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="registry.html">Registry</a></li>
+    <li><a href="validator.html" class="active">Validator</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+  <div class="tag">Registry v1.6.0</div>
+  <h1>Packet Validator</h1>
+  <p class="desc">Validate ADLP canonical codes or full JSON packets against the current registry.</p>
+
+  <div class="card">
+    <div class="card-head">
+      <span>Input</span>
+      <span id="regStatus">Loading registry...</span>
+    </div>
+    <div class="card-body">
+      <div class="tabs">
+        <button class="tab active" id="tabCode">Code</button>
+        <button class="tab" id="tabPacket">Full Packet</button>
+      </div>
+
+```
+  <div id="modeCode">
+    <div class="lbl">Canonical Code</div>
+    <input type="text" id="codeInput" placeholder="DOMAIN.SYSTEM.FAULT.SEVERITY" autocomplete="off" spellcheck="false"/>
+    <div class="examples">
+      <div class="ex-lbl">Examples</div>
+      <button class="ex-btn" data-ex="PROPULSION.MOTOR.OVERHEAT.S3">PROPULSION.MOTOR.OVERHEAT.S3</button>
+      <button class="ex-btn" data-ex="NAVIGATION.GPS.SIGNAL_LOSS.S2">NAVIGATION.GPS.SIGNAL_LOSS.S2</button>
+      <button class="ex-btn" data-ex="POWER.BATTERY.LOW_CHARGE.S1">POWER.BATTERY.LOW_CHARGE.S1</button>
+      <button class="ex-btn" data-ex="PROPULSION.ROTOR.FAILURE.S4">PROPULSION.ROTOR.FAILURE.S4</button>
+    </div>
+  </div>
+
+  <div id="modePacket" style="display:none">
+    <div class="lbl">JSON Packet</div>
+    <textarea id="packetInput" placeholder='{"adlp_version":"1.0","registry_version":"1.6.0","canonical_code":"PROPULSION.MOTOR.OVERHEAT.S3","event":{"event_type":"FAULT","domain":"PROPULSION","system":"MOTOR","fault_type":"OVERHEAT","severity":"S3"}}'></textarea>
+  </div>
+
+  <button class="validate-btn" id="validateBtn">VALIDATE</button>
+</div>
+```
+
+  </div>
+
+  <div class="card" id="resultCard">
+    <div class="card-head">
+      <span>Result</span>
+      <span id="resultBadge">—</span>
+    </div>
+    <div id="resultBody">
+      <div class="result-idle">Enter a code and press VALIDATE</div>
+    </div>
+  </div>
+
+  <div class="ref">
+    <h2>Quick Reference</h2>
+    <div class="ref-grid">
+      <div class="ref-card">
+        <div class="ref-title">Event Types</div>
+        <div class="ref-row">FAULT <span>Critical failure</span></div>
+        <div class="ref-row">WARNING <span>Non-critical</span></div>
+        <div class="ref-row">MAINTENANCE <span>Scheduled</span></div>
+        <div class="ref-row">STATE_CHANGE <span>Transition</span></div>
+        <div class="ref-row">RECOVERY <span>Resolved</span></div>
+      </div>
+      <div class="ref-card">
+        <div class="ref-title">Severity</div>
+        <div class="ref-row">S1 <span style="color:#4a9eff">Info</span></div>
+        <div class="ref-row">S2 <span style="color:#f5a623">Warning</span></div>
+        <div class="ref-row">S3 <span style="color:#f97316">Error</span></div>
+        <div class="ref-row">S4 <span style="color:#e84040">Critical</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>ADLP Validator · Registry v1.6.0</span>
+  <span><a href="https://github.com/msvh5vxc62-boop/adlp-validator-clean">GitHub</a></span>
+</footer>
+
+<script>
+const EVENT_TYPES=['FAULT','WARNING','MAINTENANCE','STATE_CHANGE','RECOVERY'];
+let registry=null,mode='code';
+
+async function loadRegistry(){
+  const urls=['./adlp_registry_v1.6.0.json','https://msvh5vxc62-boop.github.io/adlp-validator-clean/adlp_registry_v1.6.0.json'];
+  for(const url of urls){
+    try{
+      const r=await fetch(url,{cache:'no-store'});
+      if(!r.ok)continue;
+      registry=await r.json();
+      const el=document.getElementById('regStatus');
+      el.textContent='Registry v1.6.0 loaded';
+      el.style.color='#3ecf6a';
+      return;
+    }catch(e){}
+  }
+  const el=document.getElementById('regStatus');
+  el.textContent='Format check only';
+  el.style.color='#f5a623';
+}
+
+function setMode(m){
+  mode=m;
+  document.getElementById('modeCode').style.display=m==='code'?'':'none';
+  document.getElementById('modePacket').style.display=m==='packet'?'':'none';
+  document.getElementById('tabCode').classList.toggle('active',m==='code');
+  document.getElementById('tabPacket').classList.toggle('active',m==='packet');
+}
+
+function validateCode(code){
+  const errors=[],p=code.split('.');
+  if(p.length!==4){errors.push('Need 4 parts: DOMAIN.SYSTEM.FAULT.SEVERITY');return{valid:false,errors,d:null};}
+  const[d,s,f,sev]=p;
+  const vs=['S1','S2','S3','S4','S5'];
+  if(!vs.includes(sev))errors.push('Severity "'+sev+'" invalid');
+  let dOk=!registry,sOk=!registry,fData=null;
+  if(registry){
+    const da=registry.domains||[],sa=registry.systems||[],fa=registry.fault_types||registry.faults||[];
+    dOk=da.some(x=>x.name===d);
+    if(!dOk)errors.push('Domain "'+d+'" not found');
+    sOk=sa.some(x=>x.domain===d&&x.name===s);
+    if(dOk&&!sOk)errors.push('System "'+s+'" not in "'+d+'"');
+    fData=fa.find(x=>x.name===f);
+    if(!fData){errors.push('Fault "'+f+'" not found');}
+    else{
+      const app=fData.domains_applicable||[];
+      if(app.length&&!app.includes(d))errors.push('Fault "'+f+'" not for "'+d+'"');
+      const sg=fData.severity_guidance||fData.severities||[];
+      if(sg.length&&vs.includes(sev)&&!sg.includes(sev))errors.push('Severity "'+sev+'" not in guidance: '+sg.join(', '));
+    }
+  }
+  return{valid:errors.length===0,errors,d,s,f,sev,dOk,sOk,fData};
+}
+
+function validatePacket(json){
+  let parsed;
+  try{parsed=JSON.parse(json);}catch(e){return{valid:false,errors:['Invalid JSON: '+e.message],isPacket:true};}
+  const errors=[];
+  if(!parsed.adlp_version)errors.push('Missing: adlp_version');
+  if(!parsed.registry_version)errors.push('Missing: registry_version');
+  if(!parsed.canonical_code)errors.push('Missing: canonical_code');
+  if(!parsed.event)errors.push('Missing: event');
+  let codeRes=null;
+  if(parsed.canonical_code){codeRes=validateCode(parsed.canonical_code);errors.push(...codeRes.errors);}
+  if(parsed.event&&!parsed.event.event_type)errors.push('Missing: event.event_type');
+  if(parsed.event&&parsed.event.event_type&&!EVENT_TYPES.includes(parsed.event.event_type))errors.push('event_type "'+parsed.event.event_type+'" invalid');
+  return{valid:errors.length===0,errors,isPacket:true,codeRes};
+}
+
+function renderResult(res){
+  const badge=document.getElementById('resultBadge');
+  badge.textContent=res.valid?'VALID':'INVALID';
+  badge.style.color=res.valid?'#3ecf6a':'#e84040';
+  let h='<div style="padding:1.25rem">';
+  h+='<div class="status-bar '+(res.valid?'ok':'fail')+'"><span class="status-txt">'+(res.valid?'VALID':'INVALID')+'</span></div>';
+  if(!res.isPacket&&res.d!==null&&res.d!==undefined){
+    [{k:'DOMAIN',v:res.d,ok:res.dOk},{k:'SYSTEM',v:res.s,ok:res.sOk},{k:'FAULT',v:res.f,ok:!!res.fData},{k:'SEVERITY',v:res.sev,ok:['S1','S2','S3','S4','S5'].includes(res.sev)}]
+    .forEach(c=>{h+='<div class="row"><span class="chk '+(c.ok?'ok':'fail')+'">'+(c.ok?'✓':'✗')+'</span><span class="rkey">'+c.k+'</span><span class="rval '+(c.ok?'good':'bad')+'">'+c.v+'</span></div>';});
+  }
+  if(!res.valid)res.errors.forEach(e=>{h+='<div class="err-item"><span class="err-dot">✗</span>'+e+'</div>';});
+  h+='</div>';
+  document.getElementById('resultBody').innerHTML=h;
+}
+
+function doValidate(){
+  if(mode==='code'){
+    const code=document.getElementById('codeInput').value.trim().toUpperCase();
+    if(code)renderResult(validateCode(code));
+  }else{
+    const json=document.getElementById('packetInput').value.trim();
+    if(json)renderResult(validatePacket(json));
+  }
+}
+
+document.addEventListener('click',function(e){
+  if(e.target.closest('#validateBtn')){doValidate();return;}
+  if(e.target.closest('#tabCode')){setMode('code');return;}
+  if(e.target.closest('#tabPacket')){setMode('packet');return;}
+  const ex=e.target.closest('[data-ex]');
+  if(ex){document.getElementById('codeInput').value=ex.dataset.ex;setMode('code');}
+});
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&e.target.id==='codeInput')doValidate();
+});
+
+loadRegistry();
+</script>
+
+</body>
+</html>
