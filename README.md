@@ -38,6 +38,9 @@ The goal is to create a **common language for machine diagnostics** across:
 - aerospace systems  
 - IoT devices  
 
+
+ADLP is a lightweight outward compatibility layer, not a replacement for your internal system.
+
 ---
 
 # Protocol Components
