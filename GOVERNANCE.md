@@ -1,6 +1,7 @@
 # ADLP Governance
 
 The Autonomous Diagnostic Language Protocol (ADLP) is an open specification for representing machine diagnostic events using standardized canonical codes.
+ADLP is a lightweight outward compatibility layer, not a replacement for your internal system.
 
 ## Registry Authority
 
